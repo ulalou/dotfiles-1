@@ -72,20 +72,20 @@ theme.font                                      = "Comic Mono 10"
 theme.useless_gap                               = 8
 theme.taglist_font                              = "Comic Mono 16"
 theme.fg_normal                                 = h.foreground
-theme.fg_focus                                  = h.darker_green
+theme.fg_focus                                  = h.white
 theme.fg_urgent                                 = h.red
 theme.bg_normal                                 = h.background
 theme.bg_systray                				= h.dark_grey
 theme.systray_icon_spacing		            	= 10
 theme.bg_focus                                  = theme.bg_normal
 theme.bg_urgent                                 = "#00000000"
-theme.taglist_fg_focus                          = h.yellow
+theme.taglist_fg_focus                          = "#ffffff"
 theme.taglist_bg_focus                          = "#4C566A00"
 theme.taglist_spacing				            = 12
-theme.tasklist_bg_focus                         = '#00000000'
-theme.tasklist_fg_focus                         = theme.bg_normal--h.orange
-theme.tasklist_fg_normal                        = theme.bg_normal
-theme.border_width                              = 2
+theme.tasklist_bg_focus                         = "#00000000"
+theme.tasklist_fg_focus                         = "#00000000"
+theme.tasklist_fg_normal                        = "#00000000"
+theme.border_width                              = 0
 theme.border_normal                             = h.orange
 theme.border_focus                              = h.darker_green
 theme.border_marked                             = h.darker_green
@@ -162,7 +162,7 @@ local separators = lain.util.separators
 -- Textclock
 local clockicon = wibox.widget.imagebox(theme.widget_clock)
 local clock = awful.widget.watch(
-    "date +'%a %d %b %R'", 60,
+    "date +' %R'", 60,
     function(widget, stdout)
         widget:set_markup(" " .. markup.font(theme.font, stdout))
     end
@@ -499,9 +499,7 @@ function theme.at_screen_connect(s)
 --
 	
 
-		
-    s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
-    
+		   
     function round_bg_widget(widget, bg)
       local widget = wibox.widget {
             {
@@ -521,7 +519,54 @@ function theme.at_screen_connect(s)
 		return widget
     end
 
-    local systray = wibox.widget {
+    s.mytasklist = awful.widget.tasklist {
+              screen   = s,
+              filter   = awful.widget.tasklist.filter.currenttags,
+              buttons  = tasklist_buttons,
+              layout   = {
+                  spacing_widget = {
+                      {
+                          forced_width  = 5,
+                          forced_height = 24,
+                          thickness     = 1,
+                          color         = '#77777700',
+                          widget        = wibox.widget.separator
+                      },
+                      valign = 'center',
+                      halign = 'center',
+                      widget = wibox.container.place,
+                  },
+                  spacing = 30,
+                  layout  = wibox.layout.fixed.horizontal
+              },
+              -- Notice that there is *NO* wibox.wibox prefix, it is a template,
+              -- not a widget instance.
+              widget_template = {
+                  {
+                      wibox.widget.base.make_widget(),
+                      forced_height = 1,
+                      id            = 'background_role',
+                      widget        = wibox.container.background,
+                  },
+                  {
+                      {
+                          id     = 'clienticon',
+                          widget = awful.widget.clienticon,
+                      },
+                      margins = 5,
+                      widget  = wibox.container.margin
+                  },
+                  nil,
+                  create_callback = function(self, c, index, objects) --luacheck: no unused args
+                      self:get_children_by_id('clienticon')[1].client = c
+                  end,
+                  layout = wibox.layout.align.vertical,
+              },
+          }
+
+    local systray = 
+
+    round_bg_widget(wibox.widget {
         {
             wibox.widget.systray(),
             left   = 10,
@@ -534,7 +579,7 @@ function theme.at_screen_connect(s)
         shape      = gears.shape.rounded_rect,
         shape_clip = true,
         widget     = wibox.container.background,
-    }
+    }, theme.bg_normal)
  
 
     -- Create the wibox

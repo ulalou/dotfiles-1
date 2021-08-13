@@ -127,10 +127,11 @@ local themes = {
     "powerarrow-blue",	 	-- 3
     "blackburn",		-- 4
     "hybrid-some",      -- 5
+    "nordish",          -- 6
 }
 
 -- choose your theme here
-local chosen_theme = themes[5]
+local chosen_theme = themes[6]
 
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
@@ -153,7 +154,7 @@ local virtualmachine    = "virtualbox"
 
 -- awesome variables
 awful.util.terminal = terminal
-awful.util.tagnames = {  "", "", "", "", ""}
+awful.util.tagnames = {  "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"}
 --awful.util.tagnames = { "⠐", "⠡", "⠲", "⠵", "⠻", "⠿" }
 --awful.util.tagnames = { "⌘", "♐", "⌥", "ℵ" }
 --awful.util.tagnames = { "www", "edit", "gimp", "inkscape", "music" }
@@ -297,17 +298,6 @@ screen.connect_signal("property::geometry", function(s)
     end
 end)
 
--- No borders when rearranging only 1 non-floating or maximized client
-screen.connect_signal("arrange", function (s)
-    local only_one = #s.tiled_clients == 1
-    for _, c in pairs(s.clients) do
-        if only_one and not c.floating or c.maximized then
-            c.border_width = 3
-        else
-            c.border_width = beautiful.border_width
-        end
-    end
-end)
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s)
     s.systray = wibox.widget.systray()
@@ -343,7 +333,7 @@ globalkeys = my_table.join(
         {description = "Run program with rofi", group = "apps"}),
      
     -- Telegram
-    awful.key({ modkey }, "t", function () awful.util.spawn( "telegram-desktop" ) end,
+    awful.key({ modkey }, "t", function () awful.util.spawn( "Telegram" ) end,
         {description = "telegram", group = "apps"}),
       
     -- Abre nautilus
@@ -1008,8 +998,11 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 -- }}}
-
+client.connect_signal("manage", function (c)
+    c.shape = function(cr,w,h)
+        gears.shape.rounded_rect(cr,w,h,10)
+    end
+end)
 -- Autostart applications
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")
-awful.spawn.with_shell("picom -b --config  $HOME/.config/awesome/picom.conf")
-awful.spawn.with_shell("plank")
+

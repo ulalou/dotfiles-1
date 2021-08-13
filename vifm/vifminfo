@@ -1,0 +1,110 @@
+# You can edit this file by hand, but it's recommended not to do that.
+
+# Marks:
+'H
+	/home/jake/
+	..
+1628810733
+'b
+	/home/jake/bin/
+	..
+1628810733
+'h
+	/home/jake/
+	..
+1628810733
+
+# Bookmarks:
+
+# TUI:
+al
+q0
+v2
+ov
+m-1
+l2
+r2
+
+# Left window history (oldest to newest):
+d/home/jake
+	Desktop
+1
+d/home
+	..
+0
+d/
+	dev
+2
+d/dev
+	..
+0
+d/
+	home
+4
+d/home
+	jake
+1
+d/home/jake
+	e.jpg
+39
+d
+
+# Right window history (oldest to newest):
+D/home/jake
+	picom
+14
+D/home
+	jake
+1
+D/home/jake
+	scripts
+15
+D/home
+	jake
+1
+D/home/jake
+	Downloads
+3
+D/home/jake/Downloads
+	backup_colegio
+3
+D/home/jake/Downloads/backup_colegio
+	big_o.pdf
+3
+D/home/jake/Downloads
+	nerd
+4
+D/home/jake
+	e.jpg
+39
+D
+
+# Command line history (oldest to newest):
+:%s/\w+\.mp4/video$.mp4
+:%s/\w+\.mp4/video$.mp4`
+:q
+
+# Search history (oldest to newest):
+/home
+/\w+\.mp4
+
+# Prompt history (oldest to newest):
+
+# Local filter history (oldest to newest):
+
+# Registers:
+
+# Directory stack (oldest to newest):
+
+# Trash content:
+
+# State:
+f
+i1
+[.1
+[F
+F
+I1
+].1
+]F
+s0
