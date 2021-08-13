@@ -337,8 +337,9 @@ globalkeys = my_table.join(
         {description = "telegram", group = "apps"}),
       
     -- Abre nautilus
-    awful.key({ modkey }, "e", function () awful.util.spawn( "nautilus" ) end,
-        {description = "Nautilus - File Manager", group = "apps"}),
+    awful.key({ modkey }, "e", function () awful.util.spawn( "kitty -e vifm" ) end,
+        {description = "Vifm - File Manager", group = "apps"}),
+        
     
     -- Abre microsoft teams
     awful.key({ modkey }, "c", function () awful.util.spawn( "teams" ) end,
