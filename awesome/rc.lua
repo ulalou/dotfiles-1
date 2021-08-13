@@ -595,14 +595,12 @@ globalkeys = my_table.join(
     --awful.key({ modkey1 }, "Up",
     awful.key({ }, "F4",
         function ()
-            os.execute(string.format("amixer -q set %s 5%%+", beautiful.volume.channel))
-            beautiful.volume.update()
+            awful.util.spawn("pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo +1%")
         end),
     --awful.key({ modkey1 }, "Down",
     awful.key({ }, "F3",
         function ()
-            os.execute(string.format("amixer -q set %s 10%%-", beautiful.volume.channel))
-            beautiful.volume.update()
+            awful.util.spawn(" pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo -1% ") 
         end),
     awful.key({ }, "XF86AudioMute",
         function ()
