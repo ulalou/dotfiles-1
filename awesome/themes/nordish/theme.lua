@@ -15,18 +15,18 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 local colors                                    = {}
 --
 ---- Aurora Nord Scheme
-colors.green                                    = "#A3BE8C"
+colors.green                                    = "#D8EFCFFA"
 colors.alpha_zero                               = "#00000000"
-colors.red                                      = "#BF616A"
-colors.orange                                   = "#D08770"
-colors.yellow                                   = "#EBCB8B"
-colors.pink                                     = "#B48EAD"
+colors.red                                      = "#FFB9af"
+colors.orange                                   = "#F3cbb8"
+colors.yellow                                   = "#fefecf"
+colors.pink                                     = "#fedfef"
 
 ---- Frost
 colors.frost                                    = {}
-colors.frost.darkest                            = "#5E81AC"
-colors.frost.lightest                           = "#88C0D0"
-colors.frost.aqua                               = "#81A1C1"
+colors.frost.darkest                            = "#222529"
+colors.frost.lightest                           = "#b4d9e3"
+colors.frost.aqua                               = "#41464c"
 colors.frost.light_green                        = "#8FBCBB"
 
 ---- Snow Storm
@@ -38,8 +38,8 @@ colors.light.medium                             = "#E5E9F0"
 ---- Polar night
 colors.polar                                    = {}
 colors.polar.darkest                            = "#2E3440"
-colors.polar.lightest                           = "#4C566A"
-colors.polar.darker                             = "#3B4252"
+colors.polar.lightest                           = "#35383f"
+colors.polar.darker                             = "#33353b"
 colors.polar.lighter                            = "#434C5E"
 
 local theme                                     = {}
@@ -324,6 +324,7 @@ function theme.at_screen_connect(s)
               shape = gears.shape.rounded_bar,   
               bg = colors.polar.darker,   
               shape_clip = true,
+
               shape_border_width = 1,
               shape_border_color = theme.bg_normal,
               widget = wibox.container.background 
