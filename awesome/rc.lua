@@ -146,7 +146,7 @@ local modkey1      = "Control"
 local browser3          = "chromium -no-default-browser-check"
 local editor            = os.getenv("EDITOR") or "nvim"
 local editorgui         = "atom"
-local filemanager       = "nautilus"
+local filemanager       = "dolphin"
 local mailclient        = "evolution"
 local mediaplayer       = "spotify"
 local terminal          = "kitty"
@@ -154,7 +154,7 @@ local virtualmachine    = "virtualbox"
 
 -- awesome variables
 awful.util.terminal = terminal
-awful.util.tagnames = {  "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"}
+awful.util.tagnames = {  "一", "二", "三", "四", "五"}
 --awful.util.tagnames = { "⠐", "⠡", "⠲", "⠵", "⠻", "⠿" }
 --awful.util.tagnames = { "⌘", "♐", "⌥", "ℵ" }
 --awful.util.tagnames = { "www", "edit", "gimp", "inkscape", "music" }
@@ -321,8 +321,8 @@ root.buttons(my_table.join(
 globalkeys = my_table.join(
 
     -- Chromium
-    awful.key({ modkey }, "w", function () awful.util.spawn( "microsoft-edge-dev" ) end,
-        {description = "microsoft edge", group = "apps"}),
+    awful.key({ modkey }, "w", function () awful.util.spawn( "chromium" ) end,
+        {description = "web browser", group = "apps"}),
     
     -- Discord
     awful.key({ modkey }, "d", function () awful.util.spawn( "discord" ) end,
@@ -333,7 +333,7 @@ globalkeys = my_table.join(
         {description = "Run program with rofi", group = "apps"}),
      
     -- Telegram
-    awful.key({ modkey }, "t", function () awful.util.spawn( "Telegram" ) end,
+    awful.key({ modkey }, "t", function () awful.util.spawn( "telegram-desktop" ) end,
         {description = "telegram", group = "apps"}),
       
     -- Abre nautilus
@@ -595,12 +595,12 @@ globalkeys = my_table.join(
     --awful.key({ modkey1 }, "Up",
     awful.key({ }, "F4",
         function ()
-            awful.util.spawn("pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo +1%")
+            awful.spawn.with_shell("python3 $HOME/.config/scripts/volume/main.py set +5%")
         end),
     --awful.key({ modkey1 }, "Down",
     awful.key({ }, "F3",
         function ()
-            awful.util.spawn(" pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo -1% ") 
+            awful.spawn.with_shell("python3 $HOME/.config/scripts/volume/main.py set -5%") 
         end),
     awful.key({ }, "XF86AudioMute",
         function ()

@@ -4,6 +4,7 @@ Config files by MrJakeSir
 
 local gears = require("gears")
 local lain  = require("lain")
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 local awful = require("awful")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
@@ -49,8 +50,8 @@ theme.dir                                       = os.getenv("HOME") .. "/.config
 theme.wallpaper                                 = theme.dir .. "/wallpaper.jpg"
 
 -- Font
-theme.font                                      = "Comic Mono 10"
-theme.taglist_font                              = "Comic Mono 12"
+theme.font                                      = "Hack Nerd Font Mono 10"
+theme.taglist_font                              = "Hack Nerd Font Mono 12"
 
 -- Gaps between windows
 -- Otherwise you can change them by using:
@@ -59,11 +60,9 @@ theme.taglist_font                              = "Comic Mono 12"
 theme.useless_gap                               = 8
 
 --  Foreground variables  --
-theme.fg_normal                                 = "#ffffff"
+theme.fg_normal                                 = "#ffffff" -- White
 theme.fg_focus                                  = colors.green
-theme.fg_urgent                                 = "#000000"
-
-
+theme.fg_urgent                                 = "#000000" -- Black
 --  Background variables  --
 theme.bg_normal                                 = colors.polar.lightest 
 theme.bg_focus                                  = theme.bg_normal
@@ -78,14 +77,14 @@ theme.systray_icon_spacing		            	= 10
 -- Taglist configuration --
 
 -- Colors
-theme.taglist_fg_focus                          = "#000000"
+theme.taglist_fg_focus                          = "#000000" -- Black 
 theme.taglist_bg_focus                          = colors.green
 
 -- Taglist shape, refer to awesome wm documentation if you have 
 -- any doubt about this!
 theme.taglist_shape                             = gears.shape.rounded_rect
 
--- Icon spacing between icons 
+-- Icon spacing between workspace icons 
 theme.taglist_spacing				            = 4
 
 --[[ 
@@ -390,7 +389,7 @@ function theme.at_screen_connect(s)
             
             sep,
             
-            -- This widget displays the current layout
+            -- This widget displays the current  layout
             round_bg_widget(
 				s.mylayoutbox,
 				colors.pink

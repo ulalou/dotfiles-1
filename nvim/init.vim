@@ -57,7 +57,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'nvim-lua/completion-nvim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'davidhalter/jedi-vim'
-" Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
@@ -75,7 +74,7 @@ Plug 'luochen1990/rainbow'
 call plug#end()
 let g:rainbow_active = 1
 
-
+let g:deoplete#enable_at_startup = 1
 set background=dark
 colorscheme nord   
 
@@ -274,4 +273,9 @@ nnoremap <silent> <Space>bd :BufferOrderByDirectory<CR>
 nnoremap <silent> <Space>bl :BufferOrderByLanguage<CR>
 nnoremap <silent> <Space>bw :BufferOrderByWindowNumber<CR>
 let g:user_emmet_leader_key='<C-Z>'
+let extension = expand('%:e')
+if extension == "spwn"
+  set syntax=rust
+endif
+
 
