@@ -1,12 +1,8 @@
-" Muestra el numero de linea
 set number
-" syntax on
-" Hace que el mouse se pueda
 set expandtab ts=4 sw=4 ai
 setlocal foldmethod=syntax
-" utilizar
 set mouse=a
-"DIY autoclosing
+
 
 inoremap (; ();<left><left>
 inoremap [; [];<left><left>
@@ -20,37 +16,23 @@ inoremap " ""<left>
 inoremap ' ''<left>
 inoremap ` ``<left>
 inoremap ``` ```<cr>```<esc>
-" Espaciado entre numeros
+
 set numberwidth=1
-" Para poder usar la clipboard en
-" vim
-" show existing tab with 4 spaces width
 set tabstop=4
-" when indenting with '>', use 4 spaces width
 set shiftwidth=4
-" On pressing tab, insert 4 spaces
 set expandtab
 set clipboard=unnamed
-" Para tener el marcado de sintaxis
-" syntax on
-" Esto muestra el comando que esta siendo actualmente
-" ejecutado
 set showcmd
-" Esto muestra la barra de abajo
 set ruler
-" Hace que el encoding sea de utf-8
 set encoding=utf-8
 set showmatch
 set sw=2
-"set relativenumber
 set laststatus=2
 set noshowmode
-" Inicializa los plugins
+
+" Plugins
 call plug#begin('~/.vim/plugged')
 
-" Tema de color
-" Plug 'w0ng/vim-hybrid'
-" Para moverse mas rapidamente mediante letras y palabras clave
 Plug 'easymotion/vim-easymotion'
 Plug 'Yggdroot/indentLine'
 Plug 'scrooloose/nerdtree'
@@ -62,23 +44,19 @@ Plug 'mattn/emmet-vim'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'romgrk/barbar.nvim'
-" Plug 'sainnhe/gruvbox-material'
 Plug 'hoob3rt/lualine.nvim'
-" Plug 'ryanoasis/vim-devicons'
 Plug 'andweeb/presence.nvim'
-" Para poder navegar entre archivos abiertos
-" usando el teclado
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'luochen1990/rainbow'
-" Termina con los plugins
-call plug#end()
-let g:rainbow_active = 1
 
+
+call plug#end()
+
+
+let g:rainbow_active = 1
 let g:deoplete#enable_at_startup = 1
 set background=dark
 colorscheme nord   
-
-" La tecla modificadora es el espacio
 let mapleader=" "
 lua require('lualine').setup()
 
@@ -90,62 +68,12 @@ nmap <leader>l  :vert resize +1<CR>
 nmap <leader>h :vert resize -1<CR>
 nmap <leader>j :resize +1<CR>
 nmap <leader>k :resize -1<CR>
-" require'lualine'.setup {
-"   options = {
-"     icons_enabled = true,
-"     theme = 'gruvbox',
-"     component_separators = {'', ''},
-"     section_separators = {'', ''},
-"     disabled_filetypes = {}
-"   },
-"   sections = {
-"     lualine_a = {'mode'},
-"     lualine_b = {'branch'},
-"     lualine_c = {'filename'},
-"     lualine_x = {'encoding', 'fileformat', 'filetype'},
-"     lualine_y = {'progress'},
-"     lualine_z = {'location'}
-"   },
-"   inactive_sections = {
-"     lualine_a = {},
-"     lualine_b = {},
-"     lualine_c = {'filename'},
-"     lualine_x = {'location'},
-"     lualine_y = {},
-"     lualine_z = {}
-"   },
-"   tabline = {},
-"   extensions = {}
-" }
-" Cierra nerdtree al abrir un archivo
-" let NERDTreeQuitOnOpen=1
-
-" let g:buffet_powerline_separators = 1
-" let g:buffet_tab_icon = "\uf00a"
-" let g:buffet_left_trunc_icon = "\uf0a8"
-" let g:buffet_right_trunc_icon = "\uf0a9"
-
-" Easy motion
-" Este encontrara una palabra usando 2
-" Letras clave
-"                
-
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
 nmap <Leader>s <Plug>(easymotion-s2)
 nmap <Leader>cl :noh<cr>
-" Nerdtree sirve para poder tener varios
-" archivos abiertos en el mismo vim
 nmap <Leader>nt :NERDTreeFind<CR>
-
-" Shortcut para poder guardar
-" los archivos usando la tecla lider,
-" la cual en este ejemplo es el espacio,
-" mas la w
 nmap <Leader>w :w<CR>
-
-" Este hace lo mismo, pero en vez de guardar
-" el archivo, lo cierra
 nmap <Leader>q :q<CR>
 " let g:nvim_tree_side = 'right' "left by default
 " let g:nvim_tree_width = 40 "30 by default, can be width_in_columns or 'width_in_percent%'
@@ -236,10 +164,6 @@ nnoremap <leader>n :NvimTreeFindFile<CR>
 " NvimTreeOpen and NvimTreeClose are also available if you need them
 
 set termguicolors " this variable must be enabled for colors to be applied properly
-
-" a list of groups can be found at `:help nvim_tree_highlight`
-" highlight NvimTreeFolderIcon guibg=blue
-" Move to previous/next
 nnoremap <silent>    <A-,> :BufferPrevious<CR>
 nnoremap <silent>    <A-.> :BufferNext<CR>
 " Re-order to previous/next
@@ -259,14 +183,6 @@ nnoremap <silent>    <A-9> :BufferLast<CR>
 nnoremap <silent>    <A-p> :BufferPin<CR>
 " Close buffer
 nnoremap <silent>    <A-c> :BufferClose<CR>
-" Wipeout buffer
-"                          :BufferWipeout<CR>
-" Close commands
-"                          :BufferCloseAllButCurrent<CR>
-"                          :BufferCloseAllButPinned<CR>
-"                          :BufferCloseBuffersLeft<CR>
-"                          :BufferCloseBuffersRight<CR>
-" Magic buffer-picking mode
 nnoremap <silent> <C-s>    :BufferPick<CR>
 " Sort automatically by...
 nnoremap <silent> <Space>bd :BufferOrderByDirectory<CR>
