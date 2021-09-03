@@ -2,6 +2,9 @@
 This rice is using **nordish** theme, you can find it in themes/nordish,
 where it is also located the wallpaper.
 
+## Recommended screen size
+1366\*768
+
 # FAQ
 - How i can get that **bar**?
     - You can get that bar, by checking the **theme.lua** located in themes/nordish
@@ -27,7 +30,6 @@ where it is also located the wallpaper.
 - How do i change my wallpaper?
     - You can change the wallpaper by changing the image located in **themes/nordish/wallpaper.jpg**, or if you prefer, you can use **nitrogen**
 
-
 | apps keybindings | usage |
 | --- | --- |
 | **super + Enter** | runs terminal emulator (kitty) |
@@ -46,6 +48,6 @@ where it is also located the wallpaper.
 | **super + x** | exits awesome |
 | **super + shift + r** | restarts awesome |
 | **super + q**| kills focused application |
-
+| **super + s** | shows all the available keybindings |
 
 
