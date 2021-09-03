@@ -596,12 +596,12 @@ globalkeys = my_table.join(
     --awful.key({ modkey1 }, "Up",
     awful.key({ }, "F4",
         function ()
-            awful.spawn.with_shell("python3 $HOME/.config/scripts/volume/main.py set +5%")
+            awful.spawn.with_shell("python3 $HOME/.config/awesome/volume.py set +5%")
         end),
     --awful.key({ modkey1 }, "Down",
     awful.key({ }, "F3",
         function ()
-            awful.spawn.with_shell("python3 $HOME/.config/scripts/volume/main.py set -5%") 
+            awful.spawn.with_shell("python3 $HOME/.config/awesome/volume.py set -5%") 
         end),
     awful.key({ }, "XF86AudioMute",
         function ()
