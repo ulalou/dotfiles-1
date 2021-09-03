@@ -18,5 +18,8 @@ where it is also located the wallpaper.
 | dolphin | file manager |
 | chromium | web browser, again, if you don't like it, change it in the **rc.lua** and some parts of **themes/nordish/theme.lua** have chromium in it, so, if you use vim, id recommend you to run the folowing command: :%s/chromium/myfavoritewebbrowser/g |
 
+- I need something to run on startup, what i can do?
+    - Add this line to the **autorstart.sh**: ``run myapp``
 
-
+- How do i change my wallpaper?
+    - You can change the wallpaper by changing the image located in **themes/nordish/wallpaper.jpg**, or if you prefer, you can use **nitrogen**
