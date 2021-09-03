@@ -41,6 +41,7 @@ local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
 local ipairs, string, os, table, tostring, tonumber, type = ipairs, string, os, table, tostring, tonumber, type
 
 local logout_popup = require("awesome-wm-widgets.logout-popup-widget.logout-popup")
+
 --https://awesomewm.org/doc/api/documentation/05-awesomerc.md.html
 -- Standard awesome library
 local gears         = require("gears") --Utilities such as color parsing and objects
@@ -997,11 +998,11 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 -- }}}
-client.connect_signal("manage", function (c)
-    c.shape = function(cr,w,h)
-        gears.shape.rounded_rect(cr,w,h,10)
-    end
-end)
+--client.connect_signal("manage", function (c)
+--    c.shape = function(cr,w,h)
+--        gears.shape.rounded_rect(cr,w,h,10)
+--    end
+--end)
 -- Autostart applications
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")
 

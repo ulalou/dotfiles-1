@@ -3,12 +3,13 @@ set expandtab ts=4 sw=4 ai
 setlocal foldmethod=syntax
 set mouse=a
 
-
 inoremap (; ();<left><left>
 inoremap [; [];<left><left>
 inoremap ( ()<left>
 inoremap { {}<left>
 inoremap [ []<left>
+inoremap /* /**/<left><left>
+
 inoremap {<cr> {<cr>}<esc>O
 inoremap (<cr> (<cr>)<esc>O
 inoremap [<cr> [<cr>]<esc>O
@@ -17,16 +18,14 @@ inoremap ' ''<left>
 inoremap ` ``<left>
 inoremap ``` ```<cr>```<esc>
 
+
 set numberwidth=1
-set tabstop=4
-set shiftwidth=4
 set expandtab
-set clipboard=unnamed
+set clipboard=unnamedplus
 set showcmd
 set ruler
 set encoding=utf-8
 set showmatch
-set sw=2
 set laststatus=2
 set noshowmode
 
@@ -35,20 +34,18 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'easymotion/vim-easymotion'
 Plug 'Yggdroot/indentLine'
-Plug 'scrooloose/nerdtree'
-Plug 'nvim-lua/completion-nvim'
+Plug 'joshdick/onedark.vim'
 Plug 'arcticicestudio/nord-vim'
-Plug 'davidhalter/jedi-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim', {'for': ['html', 'css', 'htm']}
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'romgrk/barbar.nvim'
 Plug 'hoob3rt/lualine.nvim'
+Plug 'https://gitlab.com/verticallity/spwn-vim'
 Plug 'andweeb/presence.nvim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'luochen1990/rainbow'
-
 
 call plug#end()
 
@@ -56,13 +53,14 @@ call plug#end()
 let g:rainbow_active = 1
 let g:deoplete#enable_at_startup = 1
 set background=dark
-colorscheme nord   
+" colorscheme nord   
+colorscheme onedark
 let mapleader=" "
 lua require('lualine').setup()
 
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>t  :sp<CR> :term<CR><C-w>J :resize -10<CR>i
+nmap <leader>t  :sp<CR>:term<CR><C-w>J:resize -10<CR>i
 
 nmap <leader>l  :vert resize +1<CR>
 nmap <leader>h :vert resize -1<CR>
@@ -188,10 +186,9 @@ nnoremap <silent> <C-s>    :BufferPick<CR>
 nnoremap <silent> <Space>bd :BufferOrderByDirectory<CR>
 nnoremap <silent> <Space>bl :BufferOrderByLanguage<CR>
 nnoremap <silent> <Space>bw :BufferOrderByWindowNumber<CR>
-let g:user_emmet_leader_key='<C-Z>'
+let g:user_emmet_leader_key='<C-z>'
 let extension = expand('%:e')
-if extension == "spwn"
-  set syntax=rust
-endif
-
+""if extension == "spwn"
+""  set syntax=rust
+""endif
 
