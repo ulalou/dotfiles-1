@@ -11,7 +11,7 @@ where it is also located the wallpaper.
 
 | Dependencies | Why it is needed |
 | --- | --- |
-| lain, awesome-buttons, awesome-wm-widgets, lain, some scripts | It is used by the bar, they're in this same directory so don't worry 'bout that |
+| awesome-buttons, awesome-wm-widgets, lain, some scripts | It is used by the bar, they're in this same directory so don't worry 'bout that |
 | picom | compositor |
 | dunst | notification daemon |
 | kitty | terminal emulator, if you don't like it, change it in the **rc.lua**|
