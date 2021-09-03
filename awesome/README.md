@@ -3,7 +3,7 @@ This rice is using **nordish** theme, you can find it in themes/nordish,
 where it is also located the wallpaper.
 
 ### Recommended screen size
-Recommended -> 1920x1080
+Recommended -> 1920x1080  
 Minimun     -> 1366x768
 
 
