@@ -1,3 +1,4 @@
+
 set number
 set expandtab ts=4 sw=4 ai
 setlocal foldmethod=syntax
@@ -46,7 +47,6 @@ Plug 'https://gitlab.com/verticallity/spwn-vim'
 Plug 'andweeb/presence.nvim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'luochen1990/rainbow'
-
 call plug#end()
 
 
@@ -57,6 +57,7 @@ set background=dark
 colorscheme onedark
 let mapleader=" "
 lua require('lualine').setup()
+
 
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
@@ -191,4 +192,8 @@ let extension = expand('%:e')
 ""if extension == "spwn"
 ""  set syntax=rust
 ""endif
+
+highlight NvimTreeNormal guibg=#22262d
+hi BufferTabPageFill guibg=#22262d
+
 

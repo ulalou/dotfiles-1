@@ -146,7 +146,7 @@ local modkey1      = "Control"
 --change these variables if you want
 local browser3          = "chromium -no-default-browser-check"
 local editor            = os.getenv("EDITOR") or "nvim"
-local editorgui         = "atom"
+local editorgui         = "code-insiders"
 local filemanager       = "dolphin"
 local mailclient        = "evolution"
 local mediaplayer       = "spotify"

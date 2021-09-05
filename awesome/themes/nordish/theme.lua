@@ -163,7 +163,7 @@ local clock = awful.widget.watch(
 theme.cal = lain.widget.cal({
     attach_to = { clock },
     notification_preset = {
-        font = "Comic Mono 10",
+        font = string.format("Comic Mono %s", 10*fontspr),
         fg   = theme.fg_normal,
         bg   = theme.bg_normal
     }
@@ -306,8 +306,33 @@ function theme.at_screen_connect(s)
     local appsep= wibox.widget.textbox("  ")
     appsep.font = string.format("Comic Mono %s", 5*fontspr)
     
-    local systray = wibox.widget.textbox("")
-    local aditional_widgets = {}
+    ---------- Systray ----------
+    local systray = round_bg_widget(wibox.widget {
+        layout=wibox.layout.fixed.horizontal,
+        {
+            {
+                text="♥",
+                font="Hack Nerd Font Mono 15",
+                widget=wibox.widget.textbox
+            },
+            widget=wibox.container.margin
+        },
+        {
+            -- Margin 
+            wibox.widget.systray(),
+            left   = 10,
+            top    = 2,
+            bottom = 2,
+            right  = 10,
+            widget = wibox.container.margin,
+        },
+        bg         = colors.polar.darker,
+      
+        -- Sets a rounded shape 
+        shape      = gears.shape.rounded_rect,
+        shape_clip = true,
+        widget     = wibox.container.background,
+    }, colors.polar.darker, colors.yellow)    local aditional_widgets = {}
     local minus = 0
     local volwidg = {
          
@@ -351,40 +376,13 @@ function theme.at_screen_connect(s)
     
 
     if s.workarea.width > 1366 then
-        ---------- Systray ----------
-        systray = round_bg_widget(wibox.widget {
-            layout=wibox.layout.fixed.horizontal,
-            {
-                {
-                    text="♥",
-                    font="Hack Nerd Font Mono 15",
-                    widget=wibox.widget.textbox
-                },
-                widget=wibox.container.margin
-            },
-            {
-                -- Margin 
-                wibox.widget.systray(),
-                left   = 10,
-                top    = 2,
-                bottom = 2,
-                right  = 10,
-                widget = wibox.container.margin,
-            },
-            bg         = colors.polar.darker,
-          
-            -- Sets a rounded shape 
-            shape      = gears.shape.rounded_rect,
-            shape_clip = true,
-            widget     = wibox.container.background,
-        }, colors.polar.darker, colors.yellow)
+        
 
         minus = s.dpi-550
 
         aditional_widgets = {
             layout=wibox.layout.fixed.horizontal,
-            -- Systray 
-            systray,
+            
             -- round_bg_widget(
            --     wibox.widget
            --     {
@@ -460,7 +458,7 @@ function theme.at_screen_connect(s)
             vol
         }
     else
-        fontspr = 0.55
+        fontspr = 0.94
         aditional_widgets = {text="", widget=wibox.widget.textbox}
         minus = minus - 100
     end
@@ -487,9 +485,9 @@ function theme.at_screen_connect(s)
     -- or if you want to change its position, change
     -- its value
     s.mywibox.y = 8
-    s.mywibox.x = s.mywibox.x + (s.workarea.width//2)//3.5
+    s.mywibox.x = s.mywibox.x + (s.workarea.width//2)//6.5
     
-----------------------------------------
+---------------------------------------
 --                                    --
 --            Widget setup            --
 --                                    --
@@ -595,7 +593,7 @@ function theme.at_screen_connect(s)
             
             {
                 text="    ",
-                font="Comic Mono 10",
+                font=string.format("Comic Mono %s", 10*fontspr),
                 widget = wibox.widget.textbox
             }
         },
@@ -687,13 +685,16 @@ function theme.at_screen_connect(s)
             ---- Systray 
             --systray,
             -- System time
-            sep,
+            
 			round_bg_widget(wibox.container.margin(clock,
                                                    dpi(4),
                                                    dpi(8)),
                                                    colors.polar.darker,
                                                    colors.orange),
             
+            appsep, appsep, appsep,
+            -- Systray 
+            systray,
             appsep, appsep, appsep,
             add_app(
                 "kitty -e nmtui",
