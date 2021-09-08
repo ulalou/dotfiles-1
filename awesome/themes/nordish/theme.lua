@@ -43,7 +43,7 @@ colors.polar.darkest                            = "#2E3440"
 colors.polar.lightest                           = "#35383f"
 colors.polar.darker                             = "#3f434c"
 colors.polar.lighter                            = "#434C5E"
-
+colors.bg                                       = "#1b1f27"
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/nordish"
 
@@ -51,59 +51,48 @@ theme.dir                                       = os.getenv("HOME") .. "/.config
 theme.wallpaper                                 = theme.dir .. "/wallpaper.jpg"
 
 -- Font
-theme.font                                      = "Hack Nerd Font Mono 10"
-theme.taglist_font                              = "Hack Nerd Font Mono 12"
+theme.font                                      = "JetBrainsMono Nerd Font 11"
+theme.taglist_font                              = "JetBrainsMono Nerd Font 15"
 
 -- Gaps between windows
 -- Otherwise you can change them by using:
 --      altkey + ctrl + j           = Increment gaps
 --      altkey + ctrl + h           = Decrement gaps
-theme.useless_gap                               = 0
+theme.useless_gap                               = 3
 
 --  Foreground variables  --
 theme.fg_normal                                 = "#ffffff" -- White
 theme.fg_focus                                  = colors.green
 theme.fg_urgent                                 = "#000000" -- Black
 --  Background variables  --
-theme.bg_normal                                 = colors.polar.lightest 
+theme.bg_normal                                 = colors.bg
 theme.bg_focus                                  = theme.bg_normal
 theme.bg_urgent                                 = colors.red
 
 -- Systray background color
-theme.bg_systray                				= colors.polar.darker
+theme.bg_systray                	        = colors.polar.darkest
 
 -- Systray icon spacing 
-theme.systray_icon_spacing		            	= 10
+theme.systray_icon_spacing		        = 10
 
 -- Taglist configuration --
-theme.taglist_bg_occupied                       = colors.orange
-theme.taglist_fg_occupied                       = colors.orange
-theme.taglist_bg_empty                          = colors.green
+theme.taglist_bg_occupied                       = colors.polar.darkest
+theme.taglist_fg_occupied                       = colors.yellow
+theme.taglist_bg_empty                          = colors.polar.darkest 
 theme.taglist_fg_empty                          = colors.green
-theme.taglist_bg_urgent                         = colors.pink
+theme.taglist_bg_urgent                         = colors.polar.darkest
 theme.taglist_fg_urgent                         = colors.pink
 theme.taglist_fg_volatile                       = colors.frost.lightest
-theme.taglist_bg_volatile                       = colors.frost.lightest
+theme.taglist_bg_volatile                       = colors.polar.darkest
 -- Colors
-theme.taglist_fg_focus                          = colors.light.lighter
-theme.taglist_bg_focus                          = colors.light.lighter
-
+theme.taglist_fg_focus                          = colors.light.medium
+theme.taglist_bg_focus                          = colors.polar.darkest
 -- Taglist shape, refer to awesome wm documentation if you have 
 -- any doubt about this!
 theme.taglist_shape                             = gears.shape.rounded_rect
 
 -- Icon spacing between workspace icons 
-theme.taglist_spacing				            = 8
-
---[[ 
---
--- Tasklist Configuration,
--- NOTE: If you want a tasklist in your wibar,
--- UNCOMMENT THESE LINES!
-theme.tasklist_bg_focus                         = "#00000000"
-theme.tasklist_fg_focus                         = "#00000000"
-theme.tasklist_fg_normal                        = "#00000000"
---]]
+theme.taglist_spacing				= 2
 
 -- Sets the border to zero
 theme.border_width                              = 0
@@ -126,30 +115,11 @@ theme.titlebar_fg_focus                         = theme.fg_focus
 theme.menu_height                               = dpi(25)
 theme.menu_width                                = dpi(260)
 
--- Icons 
---theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
---theme.awesome_icon                              = theme.dir .. "/icons/awesome.png"
-
--- Tiling
--- theme.layout_tile                                 = theme.dir .. "/icons/tile.png"
---theme.layout_tileleft                           = theme.dir .. "/icons/tileleft.png"
---theme.layout_tilebottom                         = theme.dir .. "/icons/tilebottom.png"
---theme.layout_tiletop                            = theme.dir .. "/icons/tiletop.png"
---theme.layout_fairv                              = theme.dir .. "/icons/fairv.png"
---theme.layout_fairh                              = theme.dir .. "/icons/fairh.png"
---theme.layout_spiral                             = theme.dir .. "/icons/spiral.png"
---theme.layout_dwindle                            = theme.dir .. "/icons/dwindle.png"
---theme.layout_max                                = theme.dir .. "/icons/max.png"
---theme.layout_fullscreen                         = theme.dir .. "/icons/fullscreen.png"
---theme.layout_magnifier                          = theme.dir .. "/icons/magnifier.png"
---theme.layout_floating                           = theme.dir .. "/icons/floating.png"
 theme.widget_mem                                = theme.dir .. "/icons/mem.png"
 theme.widget_cpu                                = theme.dir .. "/icons/cpu.png"
 
 local markup = lain.util.markup
 local separators = lain.util.separators
-
-
 -- Textclock
 local clockicon = wibox.widget.imagebox(theme.widget_clock)
 local clock = awful.widget.watch(
@@ -167,27 +137,6 @@ theme.cal = lain.widget.cal({
         fg   = theme.fg_normal,
         bg   = theme.bg_normal
     }
-})
-
-
--- Memory lain widget  
-local memicon = wibox.widget.imagebox(theme.widget_mem)
-local mem = lain.widget.mem({
-    settings = function()
-        -- You can change its format here 
-        widget:set_markup(markup.font(theme.font, " " .. mem_now.used .. "MB "))
-    end
-    
-})
-
-
-
--- CPU lain widget 
-local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
-local cpu = lain.widget.cpu({
-    settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. cpu_now.usage .. "% "))
-    end
 })
 
 function theme.at_screen_connect(s)
@@ -251,7 +200,7 @@ function theme.at_screen_connect(s)
             {
                 {
                 text = text,
-                font = string.format("Hack Nerd Font Mono %s", 20*fontspr),
+                font = string.format("JetBrainsMono Nerd Font %s", 15*fontspr),
                 widget = wibox.widget.textbox
                 },
                 -- Margin 
@@ -271,17 +220,24 @@ function theme.at_screen_connect(s)
             shape_clip = true,
             widget     = wibox.container.background,
         }
+        -- When pressed the widget, it will
+        -- change its color and spawn the app
         widget:connect_signal("button::press",
             function()
                 widget.fg = colors.frost.lightest
                 awful.spawn.with_shell(app)
             end
         )
+
+        -- This function will be called when the button  is 
+        -- released
         widget:connect_signal("button::release",
             function()
                 widget.fg = fg
             end
         )
+
+        -- When its on hover, it will change its color
         widget:connect_signal("mouse::enter",
             function()
                 widget.fg = colors.green
@@ -302,61 +258,76 @@ function theme.at_screen_connect(s)
     --         change the font size, instead of 5. Just play with it!
     sep.font    = string.format("Comic Mono %s", 10*fontspr)
     
+    local menu = wibox.widget {
+            {
+                {
+                    image  = theme.dir .. "/awesome.png",
+                    resize = true,
+                    widget = wibox.widget.imagebox
+                },
+                --Margin 
+                left   = 5,
+                spacing = 20, 
+                right  = 5,
+                widget = wibox.container.margin,
+            },
+            
+            bg         = colors.polar.darkest .. "AF",
+            fg         = theme.bg_normal,
+
+            -- Sets the shape 
+            shape      = gears.shape.rounded_rect,
+            shape_clip = true,
+            widget     = wibox.container.background,
+        }
+    
+    -- When pressed the widget, it will
+    -- change its color and spawn the menu
+    menu:connect_signal("button::press",
+        function()
+          awful.util.mymainmenu:toggle()
+        end
+    )
 
     local appsep= wibox.widget.textbox("  ")
     appsep.font = string.format("Comic Mono %s", 5*fontspr)
     
-    ---------- Systray ----------
-    local systray = round_bg_widget(wibox.widget {
-        layout=wibox.layout.fixed.horizontal,
-        {
-            {
-                text="♥",
-                font="Hack Nerd Font Mono 15",
-                widget=wibox.widget.textbox
-            },
-            widget=wibox.container.margin
-        },
-        {
-            -- Margin 
-            wibox.widget.systray(),
-            left   = 10,
-            top    = 2,
-            bottom = 2,
-            right  = 10,
-            widget = wibox.container.margin,
-        },
-        bg         = colors.polar.darker,
-      
-        -- Sets a rounded shape 
-        shape      = gears.shape.rounded_rect,
-        shape_clip = true,
-        widget     = wibox.container.background,
-    }, colors.polar.darker, colors.yellow)    local aditional_widgets = {}
-    local minus = 0
-    local volwidg = {
-         
-        layout=wibox.layout.fixed.horizontal,
-        {
-            volume_widget{widget_type='icon'},
-            widget = wibox.container.margin,
-        },
+    -- Systray -- 
+    local systray = round_bg_widget(
+      wibox.widget.systray(),
+      colors.polar.darkest,
+      colors.green
+    )
 
-        {
-            volume_widget{
-                main_color=colors.frost.lightest,
-                widget_type = 'horizontal_bar',
-                bg_color=colors.polar.lighter
-            },
-            widget = wibox.container.margin,
-        },
-        widget = wibox.container.background
-    }
+    --
+    -- Volume widget
+    --
     vol = {
-            
             -- Set up 
             {
-                volwidg,
+                {
+                     
+                    layout=wibox.layout.fixed.horizontal,
+                    {
+                        {
+                          text="",
+                          font=string.format("JetBrainsMono Nerd Font %s",
+                                             15*fontspr),
+                          widget=wibox.widget.textbox
+                        },
+                        widget = wibox.container.margin,
+                    },
+
+                    {
+                        volume_widget{
+                            main_color=colors.frost.lightest,
+                            widget_type = 'horizontal_bar',
+                            bg_color=colors.polar.lighter
+                        },
+                        widget = wibox.container.margin,
+                    },
+                    widget = wibox.container.background
+                },
                 -- Margin 
                 left   = 10,
                 spacing = 20,
@@ -365,7 +336,7 @@ function theme.at_screen_connect(s)
                 right  = 10,
                 widget = wibox.container.margin,
             },
-            bg         = colors.polar.darker,
+            bg         = colors.polar.darkest,
             fg         = colors.green,
 
             -- Sets the shape 
@@ -375,117 +346,30 @@ function theme.at_screen_connect(s)
     }
     
 
-    if s.workarea.width > 1366 then
-        
-
-        minus = s.dpi-550
-
-        aditional_widgets = {
-            layout=wibox.layout.fixed.horizontal,
-            
-            -- round_bg_widget(
-           --     wibox.widget
-           --     {
-           --         volume_widget{widget_type='icon'},
-           --         widget = wibox.container.margin,
-           --     },
-
-           --     colors.polar.darker,
-           --     colors.green
-           -- ),
-           -- 
-           -- volume_widget{
-           --     main_color=colors.frost.lightest,
-           --     widget_type = 'horizontal_bar',
-           --     bg_color=colors.polar.lighter
-           -- },
-            sep,
-            round_bg_widget(
-                {
-                    layout = wibox.layout.fixed.horizontal,
-                    {
-                        wibox.widget{
-                            text="",
-                            font="Hack Nerd Font Mono 15",
-                            widget=wibox.widget.textbox
-                        },
-                        top    = 2,
-                        bottom = 2,
-                        widget = wibox.container.margin
-                    },
-                    {
-                        awful.widget.keyboardlayout(),
-                        top    = 2,
-                        bottom = 2,
-                        widget = wibox.container.margin
-                    },
-                    widget = wibox.container.background
-                },
-                --awful.widget.keyboardlayout(),
-                colors.polar.darker,
-                colors.green
-            ),sep,
-            -- This widget displays the current  layout
-            
-            
-            
-            round_bg_widget(
-				{
-                    layout = wibox.layout.fixed.horizontal,
-                    {
-                        wibox.widget{
-                            text="类",
-                            font="Hack Nerd Font Mono 15",
-                            widget=wibox.widget.textbox
-                        },
-                        top    = 2,
-                        bottom = 2,
-                        right=10,
-                        widget = wibox.container.margin
-                    },
-                    {
-                        s.mylayoutbox,
-                        top    = 2,
-                        bottom = 2,
-                        widget = wibox.container.margin
-                    },
-                    widget = wibox.container.background
-                },
-				colors.polar.darker,
-                colors.pink
-			),
-            sep,
-            vol
-        }
-    else
+    if s.workarea.width <= 1366 then      
         fontspr = 0.94
-        aditional_widgets = {text="", widget=wibox.widget.textbox}
-        minus = minus - 100
+        systray = wibox.widget.textbox("")
     end
 
     -- Creates the wibox 
     s.mywibox = awful.wibar(
-                { 
-                position = "top",
-                align='center',
-    			screen = s,
-			    height = dpi(25),
-                --width = (s.workarea.width//2)-minus,
-                shape  = gears.shape.rounded_rect,
-
-                -- Sets an invisible background but the
-                -- widgets keep showing 
-			    bg = string.format("%s00", theme.bg_normal),
-			    fg = theme.fg_normal,
-			    opacity = 1.0,
-			    })
+      { 
+        position = "top",
+        screen = s,
+        height = dpi(25),
+        bg = "#1b1f27",
+        fg = theme.fg_normal,
+        border_width = 5,
+        border_color = "#1b1f27",
+      }
+    )
     
     -- Separates the wibox from the top a little bit,
     -- it you want it in the top, comment this line,
     -- or if you want to change its position, change
     -- its value
-    s.mywibox.y = 8
-    s.mywibox.x = s.mywibox.x + (s.workarea.width//2)//6.5
+    --s.mywibox.y = 8
+    -- s.mywibox.x = s.mywibox.x + (s.workarea.width//2)//2
     
 ---------------------------------------
 --                                    --
@@ -494,21 +378,22 @@ function theme.at_screen_connect(s)
 ----------------------------------------
 
     s.mywibox:setup {
-        
-        
-        layout = wibox.layout.fixed.horizontal,
+        layout = wibox.layout.align.horizontal,
+        expand='none',
         { -- Left widgets
+            appsep, appsep, appsep,
+            menu, appsep, appsep, appsep,
             {
                 {
                     awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons),
-                    left   = 10,
-                    top    = 8,
-                    bottom = 8,
-                    right  = 10,
+                    left   = 2,
+                    top    = 2,
+                    bottom = 2,
+                    right  = 2,
                     widget = wibox.container.margin
                 },
                 shape = gears.shape.rounded_bar,
-                bg = colors.polar.darker,   
+                bg = colors.polar.darkest,   
                 shape_clip = true,
                 shape_border_width = 1,
                 shape_border_color = theme.bg_normal,
@@ -519,219 +404,98 @@ function theme.at_screen_connect(s)
                 font=string.format("Comic Mono %s", 10*fontspr),
                 widget = wibox.widget.textbox
             },
+            
             layout = wibox.layout.fixed.horizontal,
-            add_app("kitty",
-                    "",
-                    colors.red,
-                    colors.polar.darker),
-            appsep,
-            add_app(
-                "kitty -e nvim",
-                "",
-                colors.pink,
-                colors.polar.darker
-            ),
-
-            appsep,
-            add_app(
-                "dolphin",
-                "",
-
-                colors.pink,
-                colors.polar.darker
-            ),
-            appsep,
-            add_app(
-                "chromium",
-                "",
-                colors.frost.light_green,
-                colors.polar.darker
-            ),
-            appsep,
-            add_app(
-                "discord",
-                "ﭮ",
-                colors.frost.lightest,
-                colors.polar.darker
-            ),
-            appsep,
-            add_app(
-                "telegram-desktop",
-                "",
-                colors.light.medium,
-                colors.polar.darker
-            ),
-            appsep,
-            add_app(
-                "teams",
-                "",
-                colors.frost.light_green,
-                colors.polar.darker
-            ),
-            appsep,appsep,appsep,
-            add_app(
-                "chromium https://reddit.com",
-                "",
-                colors.frost.light_green,
-                colors.polar.darker
-            ),
-            appsep,
-            add_app(
-                "chromium https://twitter.com",
-                "",
-                colors.frost.lightest,
-                colors.polar.darker
-            ),
-            appsep,
-            add_app(
-                "chromium https://youtube.com",
-                "",
-                colors.red,
-                colors.polar.darker
-            ),
-            
-            
-            {
-                text="    ",
-                font=string.format("Comic Mono %s", 10*fontspr),
-                widget = wibox.widget.textbox
-            }
         },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-	        
-            -- Keyboard layout widget 
-            -- You can comment this widget 
-            -- if you dont want it, in my 
-            -- case i need this because 
-            -- i use two different keyboard 
-            -- distributions
-
-          --  sep,
-
-            -- Sets the system memory widget
-          --  round_bg_widget(
-          --    
-          --    -- Margin widget to add spacing
-          --    wibox.container.margin(wibox.widget { 
-          --      memicon,
-          --      mem.widget,
-          --      layout = wibox.layout.align.horizontal 
-          --    },
-          --    dpi(2),
-          --    dpi(3)
-          --    ),
-
-          --    -- Sets the color 
-          --    colors.orange
-          --  ),
-
-         --   sep,
-            
-            -- CPU usage widget
-        --    round_bg_widget(
-		--		wibox.container.margin(wibox.widget {
-        --          cpuicon,
-        --          cpu.widget,
-        --          layout = wibox.layout.align.horizontal },
-        --          dpi(3),
-        --          dpi(4)),
-
-        --        -- Sets the color 
-		--		colors.yellow
-		--	),
-        -- Tasklist configuration
-            
-            -- s.mytaglist,
-            --s.mypromptbox,
-            --spr,
-
-            
-            
-            aditional_widgets,
-            --round_bg_widget(
-            --    wibox.widget
-            --    {
-            --        volume_widget{widget_type='icon'},
-            --        widget = wibox.container.margin,
-            --    },
-
-            --    colors.polar.darker,
-            --    colors.green
-            --),
-            --
-            --volume_widget{
-            --    main_color=colors.frost.lightest,
-            --    widget_type = 'horizontal_bar',
-            --    bg_color=colors.polar.lighter
-            --},
-            --sep,
-            --round_bg_widget(
-            --  awful.widget.keyboardlayout(),
-            --  colors.polar.darker,
-            --  colors.green
-            --),sep,
-            ---- This widget displays the current  layout
-            --
-            --
-            --
-            --round_bg_widget(
-			--	s.mylayoutbox,
-			--	colors.polar.darker,
-            --    colors.pink
-			--),
-            --sep,
-
-            ---- Systray 
-            --systray,
+            vol,
+            sep,
             -- System time
             
-			round_bg_widget(wibox.container.margin(clock,
-                                                   dpi(4),
-                                                   dpi(8)),
-                                                   colors.polar.darker,
-                                                   colors.orange),
-            
-            appsep, appsep, appsep,
+            round_bg_widget(wibox.container.margin(clock,
+               dpi(4),
+               dpi(8)),
+               colors.polar.darkest,
+               colors.frost.lightest
+            ),
+            appsep,
+            round_bg_widget(
+               {
+                layout = wibox.layout.fixed.horizontal,
+                {
+                  text = "",
+                  font = string.format("JetBrainsMono Nerd Font %s", 12*fontspr),
+                  widget = wibox.widget.textbox
+                },
+                
+                awful.widget.keyboardlayout()
+                
+               },
+               colors.polar.darkest,
+               colors.frost.lightest
+               
+            ),
+            appsep,
+            round_bg_widget(
+               {
+                layout = wibox.layout.fixed.horizontal,
+                {
+                  text = " ﬿",
+                  font = string.format("JetBrainsMono Nerd Font %s", 12*fontspr),
+                  widget = wibox.widget.textbox
+                },
+                
+                awful.widget.layoutbox()
+                
+               },
+               colors.polar.darkest,
+               colors.frost.lightest
+            ),
+            appsep,
             -- Systray 
             systray,
-            appsep, appsep, appsep,
-            add_app(
-                "kitty -e nmtui",
-                "",
-                colors.yellow,
-                colors.polar.darker
-            ),
             appsep,
-            add_app(
-                "kitty -e htop",
-                "",
-                colors.green,
-                colors.polar.darker
-            ),
-            appsep,
-            add_app(
-                "shutdown now",
-                "",
-                colors.red,
-                colors.polar.darker
-            ),
-            appsep,
-            add_app(
-                "reboot",
-                "",
-                colors.red,
-                colors.polar.darker
-            ),
-            appsep,
-            add_app(
-                "systemctl suspend",
-                "鈴",
-                colors.red,
-                colors.polar.darker
-            )
-          
         },
+
+        {
+
+          layout = wibox.layout.fixed.horizontal,
+          add_app(
+              "kitty -e nmtui",
+              "",
+              colors.yellow,
+              colors.polar.darkest
+          ),
+          appsep,
+          add_app(
+              "kitty -e htop",
+              "",
+              colors.green,
+              colors.polar.darkest
+          ),
+          appsep,
+          add_app(
+              "shutdown now",
+              "",
+              colors.red,
+              colors.polar.darkest
+          ),
+          appsep,
+          add_app(
+              "reboot",
+              "",
+              colors.red,
+              colors.polar.darkest
+          ),
+          appsep,
+          add_app(
+              "systemctl suspend",
+              "鈴",
+              colors.red,
+              colors.polar.darkest
+          ), appsep, appsep, appsep
+        }
     }
     awful.screen.padding(screen[s], {top = 20, left = 20,
                                     right = 20, bottom = 20})

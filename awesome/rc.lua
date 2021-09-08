@@ -155,7 +155,7 @@ local virtualmachine    = "virtualbox"
 
 -- awesome variables
 awful.util.terminal = terminal
-awful.util.tagnames = {  "一", "二", "三", "四", "五"}
+awful.util.tagnames = {  "", "", "", "", ""}
 --awful.util.tagnames = { "⠐", "⠡", "⠲", "⠵", "⠻", "⠿" }
 --awful.util.tagnames = { "⌘", "♐", "⌥", "ℵ" }
 --awful.util.tagnames = { "www", "edit", "gimp", "inkscape", "music" }
