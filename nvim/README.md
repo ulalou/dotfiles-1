@@ -1,3 +1,5 @@
+<a href="https://github.com/NvChad/NvChad"> original dotfiles</a>
+
 <h1 align="center">NvChad</h1> 
 
 <div align="center">
