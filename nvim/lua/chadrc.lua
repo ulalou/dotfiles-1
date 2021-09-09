@@ -15,6 +15,7 @@ M.ui = {
       enabled = false,
       fav_themes = {
          "onedark",
+         "aquarium",
          "gruvchad",
       },
    },
@@ -131,7 +132,7 @@ M.mappings = {
       new_window = "<leader>w",
    },
 
-   -- update nvchad from nvchad, chadness 101
+  -- update nvchad from nvchad, chadness 101
    update_nvchad = "<leader>uu",
 }
 

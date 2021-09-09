@@ -1,8 +1,4 @@
--- Todas las keybindings
--- MOD  =  tecla de windows!!
---
--- 
---____________________________________________/\\\\\\\\\\\\\\\_____________________        
+ --____________________________________________/\\\\\\\\\\\\\\\_____________________        
 -- ___________________________________________\/////////////\\\_____________________       
 --  __________________/\\\________________________________/\\\/___/\\\_______________      
 --   __/\\\\\\\\\\__/\\\\\\\\\\\__/\\\\\\\\\_____________/\\\/____\///___/\\\____/\\\_     
@@ -12,30 +8,6 @@
 --       __/\\\\\\\\\\____\//\\\\\___\//\\\\\\\\/\\__/\\\/____________\/\\\__/\\\/\///\\\_ 
 --        _\//////////______\/////_____\////////\//__\///______________\///__\///____\///__
 --
--- Control de sonido --
--- Subir volumen: F4
--- Bajar volumen: F3
---
--- Control del teclado --
--- Camiar entre distribuciones del teclado: F1
---
--- Control de ventanas:
---  Cambiar el tamaño de las ventanas:
---      Resize hacia la derecha: alt + shift + l
---      Resize hacia la izquierda: alt + shift + h
---
---  Mover las ventanas:
---      Para cambiar el numero de clientes que pueden
---      estar del lado derecho: mod + shift + l
---
---      Para cambiar el numero de clientes que pueden
---      estar del lado izquierdo: mod + shift + h
---      
---      
---
---
---  
--- 
 
 local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
 local ipairs, string, os, table, tostring, tonumber, type = ipairs, string, os, table, tostring, tonumber, type
@@ -577,15 +549,6 @@ globalkeys = my_table.join(
                   end
               end,
               {description = "restore minimized", group = "client"}),
-
-    -- Widgets popups
-    --awful.key({ altkey, }, "c", function () lain.widget.calendar.show(7) end,
-        --{description = "show calendar", group = "widgets"}),
-    --awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
-              --{description = "show filesystem", group = "widgets"}),
-    --awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
-              --{description = "show weather", group = "widgets"}),
-
     -- Brightness
     awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
               {description = "+10%", group = "hotkeys"}),
@@ -765,57 +728,6 @@ awful.rules.rules = {
     -- Titlebars
     { rule_any = { type = { "dialog", "normal" } },
       properties = { titlebars_enabled = false } },
-          -- Set applications to always map on the tag 2 on screen 1.
-    --{ rule = { class = "Subl" },
-        --properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-
-    -- Set applications to always map on the tag 1 on screen 1.
-    -- find class or role via xprop command
-    --{ rule = { class = browser2 },
-      --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
-
-    --{ rule = { class = "chromium" },
-      --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
-
-    --{ rule = { class = "Vivaldi-stable" },
-        --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true } },
-
-    --{ rule = { class = "Chromium" },
-      --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
-
-    --{ rule = { class = "Opera" },
-      --properties = { screen = 1, tag = awful.util.tagnames[1],switchtotag = true  } },
-
-    -- Set applications to always map on the tag 2 on screen 1.
-    --{ rule = { class = "Subl" },
-        --properties = { screen = 1, tag = awful.util.tagnames[2],switchtotag = true  } },
-
-    --{ rule = { class = editorgui },
-        --properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-    --{ rule = { class = "Brackets" },
-        --properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-    --{ rule = { class = "Code" },
-        --properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-    --    { rule = { class = "Geany" },
-         --  properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-
-    -- Set applications to always map on the tag 3 on screen 1.
-    --{ rule = { class = "Inkscape" },
-        --properties = { screen = 1, tag = awful.util.tagnames[3], switchtotag = true  } },
-
-    -- Set applications to always map on the tag 4 on screen 1.
-    --{ rule = { class = "Gimp" },
-        --properties = { screen = 1, tag = awful.util.tagnames[4], switchtotag = true  } },
-
-    -- Set applications to always map on the tag 5 on screen 1.
-    --{ rule = { class = "Meld" },
-        --properties = { screen = 1, tag = awful.util.tagnames[5] , switchtotag = true  } },
-
 
     -- Set applications to be maximized at startup.
     -- find class or role via xprop command

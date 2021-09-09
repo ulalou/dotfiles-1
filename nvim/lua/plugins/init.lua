@@ -329,6 +329,11 @@ return packer.startup(function()
    }
 
    use {
+     "mattn/emmet-vim",
+     ft = {"html", "css", "js", "htm"},
+   }
+
+   use {
       "tpope/vim-fugitive",
       disable = not plugin_status.vim_fugitive,
       cmd = {
@@ -343,4 +348,6 @@ return packer.startup(function()
          require("core.mappings").vim_fugitive()
       end,
    }
+
+
 end)

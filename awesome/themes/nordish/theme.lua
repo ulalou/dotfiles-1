@@ -240,7 +240,7 @@ function theme.at_screen_connect(s)
         -- When its on hover, it will change its color
         widget:connect_signal("mouse::enter",
             function()
-                widget.fg = colors.green
+                widget.fg = colors.light.lighter
             end
         )
         
