@@ -349,5 +349,9 @@ return packer.startup(function()
       end,
    }
 
+  use {
+    'andweeb/presence.nvim'
+  }
+
 
 end)
