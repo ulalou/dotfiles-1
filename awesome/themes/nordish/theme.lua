@@ -40,7 +40,7 @@ colors.light.medium                             = "#E5E9F0"
 ---- Polar night
 colors.polar                                    = {}
 colors.polar.darkest                            = "#2E3440"
-colors.polar.lightest                           = "#35383f"
+colors.polar.lightest                           = "#1e222a"
 colors.polar.darker                             = "#3f434c"
 colors.polar.lighter                            = "#434C5E"
 colors.bg                                       = "#1b1f27"
@@ -58,7 +58,7 @@ theme.taglist_font                              = "JetBrainsMono Nerd Font 15"
 -- Otherwise you can change them by using:
 --      altkey + ctrl + j           = Increment gaps
 --      altkey + ctrl + h           = Decrement gaps
-theme.useless_gap                               = 3
+theme.useless_gap                               = 0
 
 --  Foreground variables  --
 theme.fg_normal                                 = "#ffffff" -- White
@@ -95,13 +95,13 @@ theme.taglist_shape                             = gears.shape.rounded_rect
 theme.taglist_spacing				= 2
 
 -- Sets the border to zero
-theme.border_width                              = 0
+theme.border_width                              = 2
 
 -- If the border is not zero, it'll show 
 -- These colors 
-theme.border_normal                             = colors.orange 
-theme.border_focus                              = colors.green
-theme.border_marked                             = colors.green
+theme.border_normal                             = colors.polar.lightest 
+theme.border_focus                              = colors.polar.lightest
+theme.border_marked                             = colors.polar.lightest
 
 -- Titlebar variables, dont care about theme,
 -- In this configuration file we wont use it!
@@ -261,7 +261,7 @@ function theme.at_screen_connect(s)
     local menu = wibox.widget {
             {
                 {
-                    image  = theme.dir .. "/awesome.png",
+                    image  = theme.dir .. "/awesome.svg",
                     resize = true,
                     widget = wibox.widget.imagebox
                 },
@@ -304,7 +304,7 @@ function theme.at_screen_connect(s)
     --
     vol = {
             -- Set up 
-            {
+           {
                 {
                      
                     layout=wibox.layout.fixed.horizontal,
@@ -315,14 +315,27 @@ function theme.at_screen_connect(s)
                                              15*fontspr),
                           widget=wibox.widget.textbox
                         },
-                        widget = wibox.container.margin,
+                        fg = colors.frost.lightest,
+                        widget = wibox.container.background,
                     },
 
                     {
-                        volume_widget{
-                            main_color=colors.frost.lightest,
-                            widget_type = 'horizontal_bar',
-                            bg_color=colors.polar.lighter
+                        {
+                          {
+                            volume_widget{
+                              main_color=colors.frost.lightest,
+                              widget_type = 'horizontal_bar',
+                              bg_color=colors.polar.lighter
+                            },
+                            top = 1, right = 5,
+                            bottom=2, left = 5,
+                            widget = wibox.container.margin
+                          },
+                          
+                          bg = colors.polar.darkest,
+                          shape  = gears.shape.rounded_bar,
+                          shape_clip = true,
+                          widget = wibox.container.background
                         },
                         widget = wibox.container.margin,
                     },
@@ -336,6 +349,7 @@ function theme.at_screen_connect(s)
                 right  = 10,
                 widget = wibox.container.margin,
             },
+
             bg         = colors.polar.darkest,
             fg         = colors.green,
 
@@ -347,7 +361,7 @@ function theme.at_screen_connect(s)
     
 
     if s.workarea.width <= 1366 then      
-        fontspr = 0.94
+        fontspr = 0.90
         systray = wibox.widget.textbox("")
     end
 
@@ -357,13 +371,14 @@ function theme.at_screen_connect(s)
         position = "top",
         screen = s,
         height = dpi(25),
-        bg = "#1b1f27",
+        width = s.workarea.width-40-theme.border_width-3,
+        bg = theme.bg_normal,
         fg = theme.fg_normal,
-        border_width = 5,
-        border_color = "#1b1f27",
+        border_width = 3,
+        border_color = colors.polar.lightest,
       }
     )
-    
+    s.mywibox.y = 10
     -- Separates the wibox from the top a little bit,
     -- it you want it in the top, comment this line,
     -- or if you want to change its position, change
@@ -383,6 +398,8 @@ function theme.at_screen_connect(s)
         { -- Left widgets
             appsep, appsep, appsep,
             menu, appsep, appsep, appsep,
+
+            -- Workspaces
             {
                 {
                     awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons),
@@ -399,6 +416,8 @@ function theme.at_screen_connect(s)
                 shape_border_color = theme.bg_normal,
                 widget = wibox.container.background
             },
+
+            -- Separator 
             {
                 text="    ",
                 font=string.format("Comic Mono %s", 10*fontspr),

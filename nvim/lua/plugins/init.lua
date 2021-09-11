@@ -352,6 +352,8 @@ return packer.startup(function()
   use {
     'andweeb/presence.nvim'
   }
-
+  use {
+    'https://gitlab.com/verticallity/spwn-vim'
+  }
 
 end)
