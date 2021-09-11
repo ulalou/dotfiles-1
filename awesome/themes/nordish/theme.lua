@@ -92,7 +92,7 @@ theme.taglist_bg_focus                          = colors.polar.darkest
 theme.taglist_shape                             = gears.shape.rounded_rect
 
 -- Icon spacing between workspace icons 
-theme.taglist_spacing				= 2
+theme.taglist_spacing				= 0
 
 -- Sets the border to zero
 theme.border_width                              = 2
@@ -378,13 +378,8 @@ function theme.at_screen_connect(s)
         border_color = colors.polar.lightest,
       }
     )
+
     s.mywibox.y = 10
-    -- Separates the wibox from the top a little bit,
-    -- it you want it in the top, comment this line,
-    -- or if you want to change its position, change
-    -- its value
-    --s.mywibox.y = 8
-    -- s.mywibox.x = s.mywibox.x + (s.workarea.width//2)//2
     
 ---------------------------------------
 --                                    --
@@ -402,18 +397,20 @@ function theme.at_screen_connect(s)
             -- Workspaces
             {
                 {
-                    awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons),
-                    left   = 2,
+                    awful.widget.taglist(
+                      s,
+                      awful.widget.taglist.filter.all,
+                      awful.util.taglist_buttons
+                    ),
+
+                    left   = 3,
                     top    = 2,
                     bottom = 2,
-                    right  = 2,
+                    right  = 3,
                     widget = wibox.container.margin
                 },
                 shape = gears.shape.rounded_bar,
                 bg = colors.polar.darkest,   
-                shape_clip = true,
-                shape_border_width = 1,
-                shape_border_color = theme.bg_normal,
                 widget = wibox.container.background
             },
 
@@ -426,7 +423,7 @@ function theme.at_screen_connect(s)
             
             layout = wibox.layout.fixed.horizontal,
         },
-        { -- Right widgets
+        { -- center widgets
             layout = wibox.layout.fixed.horizontal,
             vol,
             sep,
@@ -478,7 +475,7 @@ function theme.at_screen_connect(s)
         },
 
         {
-
+          -- right widgets
           layout = wibox.layout.fixed.horizontal,
           add_app(
               "kitty -e nmtui",
