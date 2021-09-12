@@ -129,16 +129,6 @@ local clock = awful.widget.watch(
     end
 )
 
--- Calendar
-theme.cal = lain.widget.cal({
-    attach_to = { clock },
-    notification_preset = {
-        font = string.format("Comic Mono %s", 10*fontspr),
-        fg   = theme.fg_normal,
-        bg   = theme.bg_normal
-    }
-})
-
 function theme.at_screen_connect(s)
     
     -- If wallpaper is a function, call it with the screen
@@ -194,8 +184,20 @@ function theme.at_screen_connect(s)
     end
     -- The function ends
     
-    function add_app(app, text, fg, bg)     
+    function add_app(app, text, fg, bg, desc)     
             -- Set up 
+        local popup = awful.popup {
+          widget = {
+              text = desc,
+              widget = wibox.widget.textbox
+          },
+          bg = theme.bg_normal,
+          fg = theme.fg_normal,
+          border_width = 5,
+          ontop=true,
+          shape        = gears.shape.rounded_rect,
+          visible      = false,
+        }
         local widget = wibox.widget {
             {
                 {
@@ -240,6 +242,8 @@ function theme.at_screen_connect(s)
         -- When its on hover, it will change its color
         widget:connect_signal("mouse::enter",
             function()
+                popup:move_next_to(mouse.current_widget_geometry)
+                popup.visible = true
                 widget.fg = colors.light.lighter
             end
         )
@@ -247,6 +251,7 @@ function theme.at_screen_connect(s)
         widget:connect_signal("mouse::leave",
             function()
                 widget.fg = fg
+                popup.visible = false
             end
         )
         return widget
@@ -258,6 +263,36 @@ function theme.at_screen_connect(s)
     --         change the font size, instead of 5. Just play with it!
     sep.font    = string.format("Comic Mono %s", 10*fontspr)
     
+
+    function on_hover_msg(widget, message)
+      local popup = awful.popup {
+          widget = {
+              text = message,
+              widget = wibox.widget.textbox
+          },
+          bg = theme.bg_normal,
+          fg = theme.fg_normal,
+          border_width = 5,
+          ontop=true,
+          shape        = gears.shape.rounded_rect,
+          visible      = false,
+      }
+      widget:connect_signal("mouse::enter",
+        function()
+          popup:move_next_to(mouse.current_widget_geometry)
+          popup.visible = true
+        end
+      )
+
+      widget:connect_signal("mouse::leave",
+        function()
+          popup.visible = false
+        end
+      )
+
+      return widget
+    end
+
     local menu = wibox.widget {
             {
                 {
@@ -283,12 +318,16 @@ function theme.at_screen_connect(s)
     
     -- When pressed the widget, it will
     -- change its color and spawn the menu
-    menu:connect_signal("button::press",
+    menu:connect_signal("mouse::enter",
         function()
           awful.util.mymainmenu:toggle()
         end
     )
-
+    menu:connect_signal("mouse::leave",
+        function()
+          awful.util.mymainmenu:toggle()
+        end
+    )
     local appsep= wibox.widget.textbox("  ")
     appsep.font = string.format("Comic Mono %s", 5*fontspr)
     
@@ -302,7 +341,7 @@ function theme.at_screen_connect(s)
     --
     -- Volume widget
     --
-    vol = {
+    vol = wibox.widget{
             -- Set up 
            {
                 {
@@ -371,10 +410,10 @@ function theme.at_screen_connect(s)
         position = "top",
         screen = s,
         height = dpi(25),
-        width = s.workarea.width-40-theme.border_width-3,
+        width = s.workarea.width-40-theme.border_width-7,
         bg = theme.bg_normal,
         fg = theme.fg_normal,
-        border_width = 3,
+        border_width = 5,
         border_color = colors.polar.lightest,
       }
     )
@@ -386,6 +425,30 @@ function theme.at_screen_connect(s)
 --            Widget setup            --
 --                                    --
 ----------------------------------------
+    local tagpopup = function(index) return awful.popup {
+          widget = {
+              text = "workspace #"..index,
+              widget = wibox.widget.textbox
+          },
+          bg = theme.bg_normal,
+          fg = theme.fg_normal,
+          border_width = 5,
+          ontop=true,
+          shape        = gears.shape.rounded_rect,
+          visible      = false,
+        } end
+     -- widget:connect_signal("mouse::enter",
+     --   function()
+     --     popup:move_next_to(mouse.current_widget_geometry)
+     --     popup.visible = true
+     --   end
+     -- )
+
+     -- widget:connect_signal("mouse::leave",
+     --   function()
+     --     popup.visible = false
+     --   end
+     -- )
 
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
@@ -395,13 +458,13 @@ function theme.at_screen_connect(s)
             menu, appsep, appsep, appsep,
 
             -- Workspaces
-            {
+            wibox.widget{
                 {
-                    awful.widget.taglist(
-                      s,
-                      awful.widget.taglist.filter.all,
-                      awful.util.taglist_buttons
-                    ),
+                    awful.widget.taglist{
+                      screen = s,
+                      filter = awful.widget.taglist.filter.all,
+                      buttons = awful.util.taglist_buttons
+                    },
 
                     left   = 3,
                     top    = 2,
@@ -410,7 +473,8 @@ function theme.at_screen_connect(s)
                     widget = wibox.container.margin
                 },
                 shape = gears.shape.rounded_bar,
-                bg = colors.polar.darkest,   
+                bg = colors.polar.darkest,
+                
                 widget = wibox.container.background
             },
 
@@ -425,18 +489,23 @@ function theme.at_screen_connect(s)
         },
         { -- center widgets
             layout = wibox.layout.fixed.horizontal,
-            vol,
+            on_hover_msg(vol,
+              "Volume\n" ..
+              "Wheel up   -> Increase volume\n" ..
+              "Wheel down -> Decrease volume\n" ..
+              "Click      -> Mute\n"
+            ),
             sep,
             -- System time
             
-            round_bg_widget(wibox.container.margin(clock,
+            on_hover_msg(round_bg_widget(wibox.container.margin(clock,
                dpi(4),
                dpi(8)),
                colors.polar.darkest,
                colors.frost.lightest
-            ),
+            ), "System time"),
             appsep,
-            round_bg_widget(
+            on_hover_msg(round_bg_widget(
                {
                 layout = wibox.layout.fixed.horizontal,
                 {
@@ -451,9 +520,9 @@ function theme.at_screen_connect(s)
                colors.polar.darkest,
                colors.frost.lightest
                
-            ),
+            ), "Keyboard Layout"),
             appsep,
-            round_bg_widget(
+            on_hover_msg(round_bg_widget(
                {
                 layout = wibox.layout.fixed.horizontal,
                 {
@@ -467,10 +536,10 @@ function theme.at_screen_connect(s)
                },
                colors.polar.darkest,
                colors.frost.lightest
-            ),
+            ), "Current layout"),
             appsep,
             -- Systray 
-            systray,
+            on_hover_msg(systray, "System tray"),
             appsep,
         },
 
@@ -481,40 +550,45 @@ function theme.at_screen_connect(s)
               "kitty -e nmtui",
               "",
               colors.yellow,
-              colors.polar.darkest
+              colors.polar.darkest,
+              "Internet configuration"
           ),
           appsep,
           add_app(
               "kitty -e htop",
               "",
               colors.green,
-              colors.polar.darkest
+              colors.polar.darkest,
+              "System monitor"
           ),
           appsep,
           add_app(
               "shutdown now",
               "",
               colors.red,
-              colors.polar.darkest
+              colors.polar.darkest,
+              "Shutdowns the computer"
           ),
           appsep,
           add_app(
               "reboot",
               "",
               colors.red,
-              colors.polar.darkest
+              colors.polar.darkest,
+              "Reboots the computer"
           ),
           appsep,
           add_app(
               "systemctl suspend",
               "鈴",
               colors.red,
-              colors.polar.darkest
+              colors.polar.darkest,
+              "Suspends the computer"
           ), appsep, appsep, appsep
         }
     }
-    awful.screen.padding(screen[s], {top = 20, left = 20,
-                                    right = 20, bottom = 20})
+    awful.screen.padding(screen[s], {top = 25, left = 20,
+                                    right = 20, bottom = 10})
 end
 
 -- Returns the theme 
