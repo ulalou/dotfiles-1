@@ -27,7 +27,7 @@ local beautiful     = require("beautiful")
 
 -- Notification library
 local naughty       = require("naughty")
-naughty.config.defaults['icon_size'] = 130
+naughty.config.defaults['icon_size'] = 10
 
 --local menubar       = require("menubar")
 
@@ -49,7 +49,7 @@ local dpi           = require("beautiful.xresources").apply_dpi
 -- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
-                     title = "Oops, there were errors during startup!",
+                     title = "Sadly, an error happened during startup!!! notify this to the rice creator plsss",
                      text = awesome.startup_errors })
 end
 
@@ -61,7 +61,7 @@ do
         in_error = true
 
         naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "Oops, an error happened!",
+                         title = "Sadly, an error happened!! notify this to the rice creator plsss",
                          text = tostring(err) })
         in_error = false
     end)
@@ -95,16 +95,12 @@ awful.spawn.with_shell(
 -- {{{ Variable definitions
 
 local themes = {
-    "multicolor",		-- 1
-    "powerarrow",      		-- 2
-    "powerarrow-blue",	 	-- 3
-    "blackburn",		-- 4
-    "hybrid-some",      -- 5
-    "nordish",          -- 6
+    "hybrid-some",      -- 1
+    "nordish",          -- 2
 }
 
 -- choose your theme here
-local chosen_theme = themes[6]
+local chosen_theme = themes[2]
 
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
@@ -178,50 +174,44 @@ awful.util.taglist_buttons = my_table.join(
     awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
 )
 
-awful.util.tasklist_buttons = my_table.join(
-    awful.button({ }, 1, function (c)
-        if c == client.focus then
-            c.minimized = true
-        else
-            --c:emit_signal("request::activate", "tasklist", {raise = true})<Paste>
 
-            -- Without this, the following
-            -- :isvisible() makes no sense
-            c.minimized = false
-            if not c:isvisible() and c.first_tag then
-                c.first_tag:view_only()
-            end
-            -- This will also un-minimize
-            -- the client, if needed
-            client.focus = c
-            c:raise()
-        end
-    end),
-    awful.button({ }, 3, function ()
-        local instance = nil
+-- If you're going to use a tasklist, uncomment all of these lines!
 
-        return function ()
-            if instance and instance.wibox.visible then
-                instance:hide()
-                instance = nil
-            else
-                instance = awful.menu.clients({theme = {width = dpi(250)}})
-            end
-        end
-    end),
-    awful.button({ }, 4, function () awful.client.focus.byidx(1) end),
-    awful.button({ }, 5, function () awful.client.focus.byidx(-1) end)
-)
-
-lain.layout.termfair.nmaster           = 3
-lain.layout.termfair.ncol              = 1
-lain.layout.termfair.center.nmaster    = 3
-lain.layout.termfair.center.ncol       = 1
-lain.layout.cascade.tile.offset_x      = dpi(2)
-lain.layout.cascade.tile.offset_y      = dpi(32)
-lain.layout.cascade.tile.extra_padding = dpi(30)
-lain.layout.cascade.tile.nmaster       = 5
-lain.layout.cascade.tile.ncol          = 2
+--awful.util.tasklist_buttons = my_table.join(
+--    awful.button({ }, 1, function (c)
+--        if c == client.focus then
+--            c.minimized = true
+--        else
+--            --c:emit_signal("request::activate", "tasklist", {raise = true})<Paste>
+--
+--            -- Without this, the following
+--            -- :isvisible() makes no sense
+--            c.minimized = false
+--            if not c:isvisible() and c.first_tag then
+--                c.first_tag:view_only()
+--            end
+--            -- This will also un-minimize
+--            -- the client, if needed
+--            client.focus = c
+--            c:raise()
+--        end
+--    end),
+--
+--    awful.button({ }, 3, function ()
+--        local instance = nil
+--
+--        return function ()
+--            if instance and instance.wibox.visible then
+--                instance:hide()
+--                instance = nil
+--            else
+--                instance = awful.menu.clients({theme = {width = dpi(250)}})
+--            end
+--        end
+--    end),
+--    awful.button({ }, 4, function () awful.client.focus.byidx(1) end),
+--    awful.button({ }, 5, function () awful.client.focus.byidx(-1) end)
+--)
 
 beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme))
 -- }}}
@@ -271,14 +261,11 @@ screen.connect_signal("property::geometry", function(s)
     end
 end)
 
--- Create a wibox for each screen and add it
+--Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s)
     s.systray = wibox.widget.systray()
     s.systray.visible = true
  end)
--- }}}
-
-
 
 -- {{{ Mouse bindings
 root.buttons(my_table.join(
@@ -287,8 +274,6 @@ root.buttons(my_table.join(
     awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
-
-
 
 -- {{{ Key bindings
 globalkeys = my_table.join(
@@ -909,12 +894,5 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
--- }}}
---client.connect_signal("manage", function (c)
---    c.shape = function(cr,w,h)
---        gears.shape.rounded_rect(cr,w,h,10)
---    end
---end)
--- Autostart applications
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")
 

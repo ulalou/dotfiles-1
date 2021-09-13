@@ -115,13 +115,8 @@ theme.titlebar_fg_focus                         = theme.fg_focus
 theme.menu_height                               = dpi(25)
 theme.menu_width                                = dpi(260)
 
-theme.widget_mem                                = theme.dir .. "/icons/mem.png"
-theme.widget_cpu                                = theme.dir .. "/icons/cpu.png"
-
 local markup = lain.util.markup
-local separators = lain.util.separators
--- Textclock
-local clockicon = wibox.widget.imagebox(theme.widget_clock)
+
 local clock = awful.widget.watch(
     "date +' %R'", 60,
     function(widget, stdout)
@@ -136,6 +131,7 @@ function theme.at_screen_connect(s)
     if type(wallpaper) == "function" then
         wallpaper = wallpaper(s)
     end
+
     gears.wallpaper.maximized(wallpaper, s, true)
 
     -- All tags open with layout 1
@@ -147,16 +143,16 @@ function theme.at_screen_connect(s)
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(my_table.join(
-                           awful.button({ }, 1, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 3, function () awful.layout.inc(-1) end),
-                           awful.button({ }, 4, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(-1) end)))
+        awful.button({ }, 1, function () awful.layout.inc( 1) end),
+        awful.button({ }, 3, function () awful.layout.inc(-1) end),
+        awful.button({ }, 4, function () awful.layout.inc( 1) end),
+        awful.button({ }, 5, function () awful.layout.inc(-1) end)))
     
     
     -- Custom rounded background widget
     -- You can modify however you want
     -- Syntax:
-    --  round_bg_widget(widget, background_colour)
+    --  round_bg_widget(widget, background_colour, foreground)
     function round_bg_widget(widget, bg, fg)
       local widget = wibox.widget {
             
@@ -188,12 +184,15 @@ function theme.at_screen_connect(s)
             -- Set up 
         local popup = awful.popup {
           widget = {
-              text = desc,
-              widget = wibox.widget.textbox
+              {
+                text = desc,
+                widget = wibox.widget.textbox
+              },
+              margins = 20,
+              widget = wibox.container.margin
           },
           bg = theme.bg_normal,
           fg = theme.fg_normal,
-          border_width = 5,
           ontop=true,
           shape        = gears.shape.rounded_rect,
           visible      = false,
@@ -263,16 +262,24 @@ function theme.at_screen_connect(s)
     --         change the font size, instead of 5. Just play with it!
     sep.font    = string.format("Comic Mono %s", 10*fontspr)
     
-
+    local k = awful.widget.keyboardlayout()
+    k:connect_signal("button::press",
+      function()
+        awful.spawn.with_shell("python3 $HOME/.config/awesome/keyboard.py")
+      end
+    )
     function on_hover_msg(widget, message)
       local popup = awful.popup {
           widget = {
-              text = message,
-              widget = wibox.widget.textbox
+              {
+                text = message,
+                widget = wibox.widget.textbox
+              },
+              margins = 20,
+              widget = wibox.container.margin
           },
           bg = theme.bg_normal,
           fg = theme.fg_normal,
-          border_width = 5,
           ontop=true,
           shape        = gears.shape.rounded_rect,
           visible      = false,
@@ -292,6 +299,7 @@ function theme.at_screen_connect(s)
 
       return widget
     end
+
 
     local menu = wibox.widget {
             {
@@ -318,16 +326,12 @@ function theme.at_screen_connect(s)
     
     -- When pressed the widget, it will
     -- change its color and spawn the menu
-    menu:connect_signal("mouse::enter",
+    menu:connect_signal("button::press",
         function()
           awful.util.mymainmenu:toggle()
         end
     )
-    menu:connect_signal("mouse::leave",
-        function()
-          awful.util.mymainmenu:toggle()
-        end
-    )
+
     local appsep= wibox.widget.textbox("  ")
     appsep.font = string.format("Comic Mono %s", 5*fontspr)
     
@@ -404,6 +408,109 @@ function theme.at_screen_connect(s)
         systray = wibox.widget.textbox("")
     end
 
+    function fetch_popup(app, text, fg, bg)
+      local widget = wibox.widget {
+            {
+                {
+                text = text,
+                font = string.format(
+                "JetBrainsMono Nerd Font %s", 15*fontspr),
+                widget = wibox.widget.textbox
+                },
+                -- Margin 
+                left   = 10,
+                spacing = 20,
+                top    = 3,
+                bottom = 3,
+                right  = 10,
+                widget = wibox.container.margin,
+            },
+            
+            bg         = bg,
+            fg         = fg,
+
+            -- Sets the shape 
+            shape      = gears.shape.rounded_rect,
+            shape_clip = true,
+            widget     = wibox.container.background,
+      }
+      -- Popup   
+      local popup = awful.popup{
+          widget = {
+              {
+                {
+                  {
+                    image          = theme.dir .. "/awesome.svg",
+                    resize         = true,
+                    forced_width   = 128,
+                    forced_height  = 128,
+                    widget         = wibox.widget.imagebox
+                  },
+                  margins = 20,
+                  widget = wibox.container.margin
+                },
+                {
+                  {
+                    awful.widget.watch(
+                    [[bash -c "neofetch --stdout | python3 $HOME/.config/awesome/match.py -pipe -p '.+\[3\dm(.+)\n'"]], 16
+                    ),
+                    margins = 20,
+                    widget = wibox.container.margin
+                  },
+                  shape = gears.shape.rounded_rect,
+                  widget = wibox.container.background,
+                  bg = colors.polar.darkest .. "ea"
+                },
+                shape = gears.shape.rounded_rect,
+                widget = wibox.container.background,
+                layout = wibox.layout.fixed.horizontal
+              },
+              margins = 20,
+              widget = wibox.container.margin
+          },
+          bg = theme.bg_normal,
+          fg = theme.fg_normal,
+          ontop=true,
+          shape        = gears.shape.rounded_rect,
+          visible      = false,
+      }
+
+      -- When pressed the widget, it will
+      -- change its color and spawn the app
+      widget:connect_signal("button::press",
+          function()
+              widget.fg = colors.frost.lightest
+              awful.spawn.with_shell(app)
+          end
+      )
+
+      -- This function will be called when the button  is 
+      -- released
+      widget:connect_signal("button::release",
+          function()
+              widget.fg = fg
+          end
+      )
+
+      -- When its on hover, it will change its color
+      widget:connect_signal("mouse::enter",
+          function()
+              popup:move_next_to(mouse.current_widget_geometry)
+              popup.visible = true
+              widget.fg = colors.light.lighter
+          end
+      )
+      
+      widget:connect_signal("mouse::leave",
+          function()
+              widget.fg = fg
+              popup.visible = false
+          end
+      )
+
+      return widget
+    end
+
     -- Creates the wibox 
     s.mywibox = awful.wibar(
       { 
@@ -418,6 +525,179 @@ function theme.at_screen_connect(s)
       }
     )
 
+    local time = round_bg_widget(wibox.container.margin(clock,
+               dpi(4),
+               dpi(8)),
+               colors.polar.darkest,
+               colors.frost.lightest
+            )
+    
+    function calendar(widget)
+      local popup = awful.popup {
+          widget = {
+            {
+              {
+                text = "── Calendar ──",
+                align="center",
+                widget = wibox.widget.textbox
+              },
+              widget = wibox.container.background
+            },
+            {
+              {
+                {
+                  text = "",
+                  align = "center",
+                  font = "JetBrainsMono Nerd Font 60",
+                  widget = wibox.widget.textbox
+                },
+                right = 20,
+                left = 30,
+                widget = wibox.container.margin
+              },
+              {
+                {
+                  {
+                    
+                    {
+                      {
+                        text = "Today is a great day!",
+                        widget = wibox.widget.textbox
+                      },
+                      {
+                        {
+                          {
+                            text = "",
+                            widget = wibox.widget.textbox
+                          },
+                          fg = colors.red,
+                          widget = wibox.container.background,
+                        },
+                        {
+                          format = " %B",
+                          refresh = 60,
+                          widget = wibox.widget.textclock
+                        },
+                        margins = 5,
+                        widget = wibox.container.margin,
+                        layout = wibox.layout.fixed.horizontal
+                      },
+                     {
+                        {
+                          {
+                            text = "",
+                            widget = wibox.widget.textbox
+                          },
+                          fg = colors.green,
+                          widget = wibox.container.background,
+                        },
+                        {
+                          format = " %d",
+                          refresh = 60,
+                          widget = wibox.widget.textclock
+                        },
+                        margins = 5,
+                        widget = wibox.container.margin,
+                        layout = wibox.layout.fixed.horizontal
+                      },
+                     {
+                        {
+                          {
+                            text = "",
+                            widget = wibox.widget.textbox
+                          },
+                          fg = colors.pink,
+                          widget = wibox.container.background,
+                        },
+                        {
+                          format = " %Y",
+                          refresh = 60,
+                          widget = wibox.widget.textclock
+                        },
+                        margins = 5,
+                        widget = wibox.container.margin,
+                        layout = wibox.layout.fixed.horizontal
+                      },
+                      {
+                        {
+                          {
+                            text = "",
+                            widget = wibox.widget.textbox
+                          },
+                          fg = colors.yellow,
+                          widget = wibox.container.background,
+                        },
+                        {
+                          format = " %A",
+                          refresh = 60,
+                          widget = wibox.widget.textclock
+                        },
+                        margins = 5,
+                        widget = wibox.container.margin,
+                        layout = wibox.layout.fixed.horizontal
+                      },
+                      {
+                        {
+                          {
+                            text = "",
+                            widget = wibox.widget.textbox
+                          },
+                          fg = colors.frost.lightest,
+                          widget = wibox.container.background,
+                        },
+                        {
+                          format = " %H:%M%p ",
+                          refresh = 60,
+                          widget = wibox.widget.textclock
+                        },
+                        margins = 5,
+                        widget = wibox.container.margin,
+                        layout = wibox.layout.fixed.horizontal
+                      },                    
+                      expand = 'none',
+                      widget = wibox.container.background,
+                      layout = wibox.layout.fixed.vertical
+                    },
+
+                    margins = 10,
+                    widget = wibox.container.margin,
+                  },
+
+                  bg = colors.polar.darkest.."5a",
+                  shape = gears.shape.rounded_rect,
+                  widget = wibox.container.background
+                },
+                margins = 10,
+                widget = wibox.container.margin
+              },
+              layout = wibox.layout.fixed.horizontal,
+
+            },
+            layout = wibox.layout.fixed.vertical,
+            widget = wibox.container.margin
+          },
+          bg = theme.bg_normal,
+          fg = theme.fg_normal,
+          ontop=true,
+          shape        = gears.shape.rounded_rect,
+          visible      = false,
+      }
+      widget:connect_signal("mouse::enter",
+        function()
+          popup:move_next_to(mouse.current_widget_geometry)
+          popup.visible = true
+        end
+      )
+
+      widget:connect_signal("mouse::leave",
+        function()
+          popup.visible = false
+        end
+      )
+
+      return widget
+    end 
+    local time = calendar(time)
     s.mywibox.y = 10
     
 ---------------------------------------
@@ -425,38 +705,15 @@ function theme.at_screen_connect(s)
 --            Widget setup            --
 --                                    --
 ----------------------------------------
-    local tagpopup = function(index) return awful.popup {
-          widget = {
-              text = "workspace #"..index,
-              widget = wibox.widget.textbox
-          },
-          bg = theme.bg_normal,
-          fg = theme.fg_normal,
-          border_width = 5,
-          ontop=true,
-          shape        = gears.shape.rounded_rect,
-          visible      = false,
-        } end
-     -- widget:connect_signal("mouse::enter",
-     --   function()
-     --     popup:move_next_to(mouse.current_widget_geometry)
-     --     popup.visible = true
-     --   end
-     -- )
-
-     -- widget:connect_signal("mouse::leave",
-     --   function()
-     --     popup.visible = false
-     --   end
-     -- )
-
+    
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         expand='none',
+
         { -- Left widgets
             appsep, appsep, appsep,
             menu, appsep, appsep, appsep,
-
+            s.mypromptbox,
             -- Workspaces
             wibox.widget{
                 {
@@ -489,21 +746,9 @@ function theme.at_screen_connect(s)
         },
         { -- center widgets
             layout = wibox.layout.fixed.horizontal,
-            on_hover_msg(vol,
-              "Volume\n" ..
-              "Wheel up   -> Increase volume\n" ..
-              "Wheel down -> Decrease volume\n" ..
-              "Click      -> Mute\n"
-            ),
+            on_hover_msg(vol, "System volume\nWheel up to increase volume\nWheel down to decrease volume\nClick to mute"),
             sep,
-            -- System time
-            
-            on_hover_msg(round_bg_widget(wibox.container.margin(clock,
-               dpi(4),
-               dpi(8)),
-               colors.polar.darkest,
-               colors.frost.lightest
-            ), "System time"),
+            time,
             appsep,
             on_hover_msg(round_bg_widget(
                {
@@ -511,16 +756,16 @@ function theme.at_screen_connect(s)
                 {
                   text = "",
                   font = string.format("JetBrainsMono Nerd Font %s", 12*fontspr),
-                  widget = wibox.widget.textbox
+                  widget = wibox.widget.textbox,
                 },
                 
-                awful.widget.keyboardlayout()
+                k,
                 
                },
                colors.polar.darkest,
                colors.frost.lightest
                
-            ), "Keyboard Layout"),
+            ), "Keyboard Layout\nclick to swap map"),
             appsep,
             on_hover_msg(round_bg_widget(
                {
@@ -554,12 +799,12 @@ function theme.at_screen_connect(s)
               "Internet configuration"
           ),
           appsep,
-          add_app(
+          fetch_popup(
               "kitty -e htop",
               "",
               colors.green,
-              colors.polar.darkest,
-              "System monitor"
+              colors.polar.darkest
+              --"Prueba"
           ),
           appsep,
           add_app(
