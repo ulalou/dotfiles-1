@@ -23,7 +23,7 @@ local colors                                    = {}
 ---- Aurora Nord Scheme
 colors.green                                    = "#D8EFCFFA"
 colors.alpha_zero                               = "#00000000"
-colors.red                                      = "#FFB9af"
+colors.red                                      = "#f7dedb"
 colors.orange                                   = "#F3cbb8"
 colors.yellow                                   = "#fefecf"
 colors.pink                                     = "#fedfef"
@@ -77,7 +77,7 @@ theme.bg_urgent                                 = colors.red
 theme.bg_systray                	        = colors.polar.darkest
 
 -- Systray icon spacing 
-theme.systray_icon_spacing		        = 10
+theme.systray_icon_spacing		        = 5
 
 -- Taglist configuration --
 theme.taglist_bg_occupied                       = colors.polar.darkest
@@ -114,6 +114,24 @@ theme.titlebar_bg_normal                        = "#3F3F3F"
 theme.titlebar_bg_focus                         = theme.bg_focus
 theme.titlebar_bg_normal                        = theme.bg_normal
 theme.titlebar_fg_focus                         = theme.fg_focus
+
+
+theme.layout_fairh                       = "/usr/share/awesome/themes/zenburn/layouts/fairh.png"
+theme.layout_fairv                       = "/usr/share/awesome/themes/zenburn/layouts/fairv.png"
+theme.layout_floating                    = "/usr/share/awesome/themes/zenburn/layouts/floating.png"
+theme.layout_magnifier                   = "/usr/share/awesome/themes/zenburn/layouts/magnifier.png"
+theme.layout_max                         = "/usr/share/awesome/themes/zenburn/layouts/max.png"
+theme.layout_fullscreen                  = "/usr/share/awesome/themes/zenburn/layouts/fullscreen.png"
+theme.layout_tilebottom                  = "/usr/share/awesome/themes/zenburn/layouts/tilebottom.png"
+theme.layout_tileleft                    = "/usr/share/awesome/themes/zenburn/layouts/tileleft.png"
+theme.layout_tile                        = "/usr/share/awesome/themes/zenburn/layouts/tile.png"
+theme.layout_tiletop                     = "/usr/share/awesome/themes/zenburn/layouts/tiletop.png"
+theme.layout_spiral                      = "/usr/share/awesome/themes/zenburn/layouts/spiral.png"
+theme.layout_dwindle                     = "/usr/share/awesome/themes/zenburn/layouts/dwindle.png"
+theme.layout_cornernw                    = "/usr/share/awesome/themes/zenburn/layouts/cornernw.png"
+theme.layout_cornerne                    = "/usr/share/awesome/themes/zenburn/layouts/cornerne.png"
+theme.layout_cornersw                    = "/usr/share/awesome/themes/zenburn/layouts/cornersw.png"
+theme.layout_cornerse                    = "/usr/share/awesome/themes/zenburn/layouts/cornerse.png"
 
 -- Menu variables
 theme.menu_height                               = dpi(25)
@@ -152,7 +170,57 @@ function theme.at_screen_connect(s)
         awful.button({ }, 4, function () awful.layout.inc( 1) end),
         awful.button({ }, 5, function () awful.layout.inc(-1) end)))
     
-    
+    s.mytasklist = awful.widget.tasklist {
+        screen   = s,
+        filter   = awful.widget.tasklist.filter.currenttags,
+        buttons  = tasklist_buttons,
+        layout   = {
+            spacing_widget = {
+                {
+                    forced_width  = 10,
+                    forced_height = 24,
+                    thickness     = 4,
+                    color         = '#77777700',
+                    widget        = wibox.widget.separator
+                },
+                valign = 'center',
+                halign = 'center',
+                widget = wibox.container.place,
+            },
+            spacing = 5,
+            layout  = wibox.layout.fixed.horizontal
+        },
+        -- Notice that there is *NO* wibox.wibox prefix, it is a template,
+        -- not a widget instance.
+        widget_template = {
+            {
+                wibox.widget.base.make_widget(),
+                --forced_height = 2,
+                id            = 'background_role',
+                widget        = wibox.container.background,
+            },
+            {
+                {
+                  {
+                    id     = 'clienticon',
+                    widget = awful.widget.clienticon,
+                  },
+                  top = 1,
+                  left = 5, 
+                  right = 5,
+                  widget = wibox.container.margin,
+                },
+                shape = gears.shape.rounded_rect,
+                bg = colors.polar.darkest,
+                widget  = wibox.container.background
+            },
+            nil,
+            create_callback = function(self, c, index, objects) --luacheck: no unused args
+                self:get_children_by_id('clienticon')[1].client = c
+            end,
+            layout = wibox.layout.align.vertical,
+        },
+    }
     -- Custom rounded background widget
     -- You can modify however you want
     -- Syntax:
@@ -192,7 +260,7 @@ function theme.at_screen_connect(s)
                 text = desc,
                 widget = wibox.widget.textbox
               },
-              margins = 20,
+              margins = 30,
               widget = wibox.container.margin
           },
           bg = theme.bg_normal,
@@ -205,14 +273,14 @@ function theme.at_screen_connect(s)
             {
                 {
                 text = text,
-                font = "JetBrainsMono Nerd Font 15",
+                font = "JetBrainsMono Nerd Font 12",
                 widget = wibox.widget.textbox
                 },
                 -- Margin 
                 left   = 10,
                 spacing = 20,
-                top    = 3,
-                bottom = 3,
+                top    = 4,
+                bottom = 4,
                 right  = 10,
                 widget = wibox.container.margin,
             },
@@ -266,12 +334,6 @@ function theme.at_screen_connect(s)
     --         change the font size, instead of 5. Just play with it!
     sep.font    = "JetBrainsMono Nerd Font 10"
     
-    local k = awful.widget.keyboardlayout()
-    k:connect_signal("button::press",
-      function()
-        awful.spawn.with_shell("python3 $HOME/.config/awesome/keyboard.py")
-      end
-    )
     function on_hover_msg(widget, message)
       local popup = awful.popup {
           widget = {
@@ -361,7 +423,7 @@ function theme.at_screen_connect(s)
                           font="JetBrainsMono Nerd Font 15",
                           widget=wibox.widget.textbox
                         },
-                        fg = colors.frost.lightest,
+                        fg = colors.pink,
                         widget = wibox.container.background,
                     },
 
@@ -369,12 +431,14 @@ function theme.at_screen_connect(s)
                         {
                           {
                             volume_widget{
-                              main_color=colors.frost.lightest,
+                              main_color=colors.pink,
                               widget_type = 'horizontal_bar',
+                              width = 50,
+                              shape = gears.shape.rounded_rect,
                               bg_color=colors.polar.lighter
                             },
-                            top = 1, right = 5,
-                            bottom=2, left = 5,
+                            top = 1, right = 2,
+                            bottom=2, left = 2,
                             widget = wibox.container.margin
                           },
                           
@@ -410,14 +474,14 @@ function theme.at_screen_connect(s)
             {
                 {
                 text = text,
-                font = "JetBrainsMono Nerd Font 15",
+                font = "JetBrainsMono Nerd Font 12",
                 widget = wibox.widget.textbox
                 },
                 -- Margin 
                 left   = 10,
                 spacing = 20,
-                top    = 3,
-                bottom = 3,
+                top    = 4,
+                bottom = 4,
                 right  = 10,
                 widget = wibox.container.margin,
             },
@@ -511,9 +575,8 @@ function theme.at_screen_connect(s)
     s.mywibox = awful.wibar(
       { 
         position = "top",
-        screen = s,
-        height = dpi(25),
-        width = s.workarea.width-40-theme.border_width-7,
+        screen = s, 
+        width = dpi(s.workarea.width-40-theme.border_width-7),
         bg = theme.bg_normal,
         fg = theme.fg_normal,
         border_width = 5,
@@ -525,7 +588,7 @@ function theme.at_screen_connect(s)
                dpi(4),
                dpi(8)),
                colors.polar.darkest,
-               colors.frost.lightest
+               colors.yellow
             )
     
     function calendar(widget)
@@ -730,63 +793,31 @@ function theme.at_screen_connect(s)
                 
                 widget = wibox.container.background
             },
-
-            -- Separator 
-            {
-                text="    ",
-                font="JetBrainsMono Nerd Font 10",
-                widget = wibox.widget.textbox
-            },
             
-            layout = wibox.layout.fixed.horizontal,
+            layout = wibox.layout.fixed.horizontal,    
+
+            
         },
         { -- center widgets
             layout = wibox.layout.fixed.horizontal,
-            on_hover_msg(vol, "System volume\nWheel up to increase volume\nWheel down to decrease volume\nClick to mute"),
-            sep,
-            time,
-            appsep,
-            on_hover_msg(round_bg_widget(
-               {
-                layout = wibox.layout.fixed.horizontal,
-                {
-                  text = "",
-                  font = "JetBrainsMono Nerd Font 12",
-                  widget = wibox.widget.textbox,
-                },
-                
-                k,
-                
-               },
-               colors.polar.darkest,
-               colors.frost.lightest
-               
-            ), "Keyboard Layout\nclick to swap map"),
-            appsep,
-            on_hover_msg(round_bg_widget(
-               {
-                layout = wibox.layout.fixed.horizontal,
-                {
-                  text = " ﬿",
-                  font = "JetBrainsMono Nerd Font 12",
-                  widget = wibox.widget.textbox
-                },
-                
-                awful.widget.layoutbox()
-                
-               },
-               colors.polar.darkest,
-               colors.frost.lightest
-            ), "Current layout"),
-            appsep,
-            -- Systray 
-            on_hover_msg(systray, "System tray"),
-            appsep,
+            s.mytasklist
         },
+        
+       -- { -- center widgets
+       --     layout = wibox.layout.fixed.horizontal,
+       --     wibox.widget.textbox("")
+       -- },
 
         {
           -- right widgets
           layout = wibox.layout.fixed.horizontal,
+          appsep,
+          time,
+          appsep,
+          on_hover_msg(vol, "System volume\nWheel up to increase volume\nWheel down to decrease volume\nClick to mute"),
+          appsep,
+          on_hover_msg(systray, "System tray"),
+          appsep,appsep,
           add_app(
               TERMINAL .." -e nmtui",
               "",
@@ -802,30 +833,18 @@ function theme.at_screen_connect(s)
               colors.polar.darkest
               --"Prueba"
           ),
-          appsep,
-          add_app(
-              "shutdown now",
-              "",
-              colors.red,
-              colors.polar.darkest,
-              "Shutdowns the computer"
-          ),
-          appsep,
-          add_app(
-              "reboot",
-              "",
-              colors.red,
-              colors.polar.darkest,
-              "Reboots the computer"
-          ),
-          appsep,
-          add_app(
-              "systemctl suspend",
-              "鈴",
-              colors.red,
-              colors.polar.darkest,
-              "Suspends the computer"
-          ), appsep, appsep, appsep
+          appsep, appsep,
+          
+          on_hover_msg(round_bg_widget(
+             {
+              layout = wibox.layout.fixed.horizontal,
+              awful.widget.layoutbox(s)
+              
+             },
+             colors.polar.darkest,
+             colors.frost.lightest
+          ), "Current layout"),
+          appsep
         }
     }
     awful.screen.padding(screen[s], {top = 25, left = 20,

@@ -27,7 +27,7 @@ local beautiful     = require("beautiful")
 
 -- Notification library
 local naughty       = require("naughty")
-naughty.config.defaults['icon_size'] = 10
+naughty.config.defaults['icon_size'] = 130
 
 --local menubar       = require("menubar")
 
