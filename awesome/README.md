@@ -2,11 +2,6 @@
 This rice is using **nordish** theme, you can find it in themes/nordish,
 where it is also located the wallpaper.
 
-### Recommended screen size
-Recommended -> 1920x1080  
-Minimun     -> 1366x768
-
-
 # FAQ
 - How i can get that **bar**?
     - You can get that bar, by checking the **theme.lua** located in themes/nordish

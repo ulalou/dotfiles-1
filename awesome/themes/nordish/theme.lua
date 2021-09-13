@@ -12,9 +12,13 @@ local dpi   = require("beautiful.xresources").apply_dpi
 local math, string, os = math, string, os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
+-- Constants
+TERMINAL                                        = "kitty"
+--BROWSER                                         = "chromium"
+
 -- Nord theme colorscheme
 local colors                                    = {}
-local fontspr                                   = 1.0
+
 --
 ---- Aurora Nord Scheme
 colors.green                                    = "#D8EFCFFA"
@@ -201,7 +205,7 @@ function theme.at_screen_connect(s)
             {
                 {
                 text = text,
-                font = string.format("JetBrainsMono Nerd Font %s", 15*fontspr),
+                font = "JetBrainsMono Nerd Font 15",
                 widget = wibox.widget.textbox
                 },
                 -- Margin 
@@ -260,7 +264,7 @@ function theme.at_screen_connect(s)
     
     ---------- If you want to change the size of the spacing,
     --         change the font size, instead of 5. Just play with it!
-    sep.font    = string.format("Comic Mono %s", 10*fontspr)
+    sep.font    = "JetBrainsMono Nerd Font 10"
     
     local k = awful.widget.keyboardlayout()
     k:connect_signal("button::press",
@@ -333,7 +337,7 @@ function theme.at_screen_connect(s)
     )
 
     local appsep= wibox.widget.textbox("  ")
-    appsep.font = string.format("Comic Mono %s", 5*fontspr)
+    appsep.font = "JetBrainsMono Nerd Font 5"
     
     -- Systray -- 
     local systray = round_bg_widget(
@@ -354,8 +358,7 @@ function theme.at_screen_connect(s)
                     {
                         {
                           text="",
-                          font=string.format("JetBrainsMono Nerd Font %s",
-                                             15*fontspr),
+                          font="JetBrainsMono Nerd Font 15",
                           widget=wibox.widget.textbox
                         },
                         fg = colors.frost.lightest,
@@ -402,19 +405,12 @@ function theme.at_screen_connect(s)
             widget     = wibox.container.background,
     }
     
-
-    if s.workarea.width <= 1366 then      
-        fontspr = 0.90
-        systray = wibox.widget.textbox("")
-    end
-
     function fetch_popup(app, text, fg, bg)
       local widget = wibox.widget {
             {
                 {
                 text = text,
-                font = string.format(
-                "JetBrainsMono Nerd Font %s", 15*fontspr),
+                font = "JetBrainsMono Nerd Font 15",
                 widget = wibox.widget.textbox
                 },
                 -- Margin 
@@ -738,7 +734,7 @@ function theme.at_screen_connect(s)
             -- Separator 
             {
                 text="    ",
-                font=string.format("Comic Mono %s", 10*fontspr),
+                font="JetBrainsMono Nerd Font 10",
                 widget = wibox.widget.textbox
             },
             
@@ -755,7 +751,7 @@ function theme.at_screen_connect(s)
                 layout = wibox.layout.fixed.horizontal,
                 {
                   text = "",
-                  font = string.format("JetBrainsMono Nerd Font %s", 12*fontspr),
+                  font = "JetBrainsMono Nerd Font 12",
                   widget = wibox.widget.textbox,
                 },
                 
@@ -772,7 +768,7 @@ function theme.at_screen_connect(s)
                 layout = wibox.layout.fixed.horizontal,
                 {
                   text = " ﬿",
-                  font = string.format("JetBrainsMono Nerd Font %s", 12*fontspr),
+                  font = "JetBrainsMono Nerd Font 12",
                   widget = wibox.widget.textbox
                 },
                 
@@ -792,7 +788,7 @@ function theme.at_screen_connect(s)
           -- right widgets
           layout = wibox.layout.fixed.horizontal,
           add_app(
-              "kitty -e nmtui",
+              TERMINAL .." -e nmtui",
               "",
               colors.yellow,
               colors.polar.darkest,
@@ -800,7 +796,7 @@ function theme.at_screen_connect(s)
           ),
           appsep,
           fetch_popup(
-              "kitty -e htop",
+              TERMINAL .." -e htop",
               "",
               colors.green,
               colors.polar.darkest
